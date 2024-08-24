@@ -1,0 +1,119 @@
+/* Container chính của header */
+.header-container {
+    background-color: #065aae; /* Màu nền xanh đậm */
+    color: #ffffff; /* Chữ trắng */
+    width: 100%;
+    padding-bottom: 10px; /* Khoảng cách dưới */
+}
+
+/* Thanh trên cùng */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 10px 20px; /* Padding đồng đều */
+    background-color: #065aae; /* Màu nền đậm hơn cho phần trên cùng */
+    position: relative; /* Để đặt hiệu ứng bên trong */
+    overflow: hidden; /* Đảm bảo nội dung không bị tràn ra ngoài */
+}
+
+/* Văn bản cuộn */
+.scrolling-text {
+    flex: 1; /* Để phần cuộn chữ chiếm toàn bộ không gian bên trái */
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    color: #ffffff; /* Màu chữ trắng */
+    font-size: 14px; /* Kích thước chữ */
+}
+
+/* Hiệu ứng cuộn chữ */
+.scrolling-text span {
+    display: inline-block;
+    padding-right: 100%; /* Bắt đầu hiệu ứng từ bên phải ngoài khung */
+    animation: scroll-right 50s linear infinite; /* Tốc độ chậm và hiệu ứng cuộn từ phải sang trái */
+}
+
+/* Thông tin email */
+.email-info {
+    flex: 1; /* Để phần email chiếm toàn bộ không gian bên phải */
+    text-align: right; /* Canh phải cho phần email */
+    background-color: #065aae; /* Màu nền tương tự để tạo sự đồng bộ */
+    padding: 0 20px; /* Thêm padding để làm nổi bật phần email */
+    border-radius: 4px; /* Bo góc để tạo cảm giác mềm mại */
+    color: #ffffff; /* Màu chữ trắng */
+}
+
+/* Hiệu ứng cuộn chữ */
+@keyframes scroll-right {
+    0% { transform: translateX(100%); } /* Bắt đầu từ bên phải ngoài khung */
+    100% { transform: translateX(-100%); } /* Chạy ra ngoài bên trái */
+}
+
+/* Cài đặt cho hình ảnh trong carousel */
+.img-carousel {
+    height: 5cm; /* Đặt chiều cao hình ảnh slide */
+    width: 100%; /* Chiều rộng bằng 100% của khung chứa */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo và bao phủ toàn bộ khung */
+}
+
+/* Cài đặt cho carousel item */
+.carousel-item {
+    height: 5cm; /* Đặt chiều cao cho item của carousel */
+}
+
+.carousel-item img {
+    height: 100%; /* Đảm bảo hình ảnh bao phủ toàn bộ chiều cao của carousel-item */
+    width: 100%; /* Đảm bảo hình ảnh bao phủ toàn bộ chiều rộng của carousel-item */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+}
+
+/* Cài đặt cho navbar */
+.navbar {
+    background-color: #065aae; /* Màu nền navbar */
+    padding: 10px 20px; /* Padding cho navbar */
+}
+
+/* Cài đặt cho dropdown menu */
+.dropdown-menu-custom {
+    background-color: #cce5ff; /* Màu nền cho menu dropdown (xanh lợt) */
+    border: none; /* Xóa viền của dropdown */
+    max-height: 6cm; /* Chiều cao tối đa cho dropdown menu */
+    overflow-y: auto; /* Thêm thanh cuộn dọc nếu nội dung vượt quá chiều cao tối đa */
+    padding: 0; /* Xóa padding để các item không bị cách xa nhau */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng để làm nổi bật dropdown */
+    z-index: 1000; /* Đảm bảo dropdown nằm trên các phần tử khác */
+}
+
+/* Cài đặt cho các item trong dropdown */
+.dropdown-menu-custom .dropdown-item {
+    color: #065aae; /* Màu chữ cho item trong dropdown */
+    padding: 0 10px; /* Padding nhỏ cho từng item, chỉ để lại padding bên trái và phải */
+    font-size: 14px; /* Kích thước chữ */
+    height: 1cm; /* Chiều cao của từng item */
+    line-height: 1cm; /* Căn giữa chữ theo chiều cao item */
+    display: flex; /* Sử dụng flexbox để căn giữa chữ */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    border-radius: 4px; /* Bo góc để tạo cảm giác mềm mại */
+}
+
+/* Màu chữ khi hover */
+.dropdown-menu-custom .dropdown-item:hover {
+    color: #000000; /* Màu chữ khi hover (đen) */
+    background-color: transparent; /* Không thay đổi màu nền khi hover */
+}
+
+/* Dòng ngăn cách giữa các danh mục */
+.dropdown-menu-custom .dropdown-divider {
+    background-color: #b3d7ff; /* Màu của dòng ngăn cách */
+    height: 1px; /* Chiều cao của dòng ngăn cách */
+}
+
+/* Cài đặt cho các liên kết trong nav */
+.nav-link {
+    color: #ffffff; /* Màu chữ cho liên kết trong navbar */
+}
+
+.nav-link:hover {
+    color: #dcdcdc; /* Màu chữ khi hover */
+}

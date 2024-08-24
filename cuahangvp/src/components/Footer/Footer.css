@@ -1,0 +1,71 @@
+/* Footer container */
+.footer-container {
+  display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử con */
+  flex-direction: column; /* Đặt các phần tử con theo chiều dọc */
+  justify-content: space-between; /* Đặt khoảng cách đều giữa các phần tử */
+  background-color: #065aae; /* Xanh đậm */
+  color: white;
+  padding: 2rem 0;
+  width: 100vw; /* Mở rộng hết chiều ngang viewport */
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến tổng chiều rộng */
+  margin: 0; /* Đảm bảo không có margin làm giảm chiều rộng */
+  overflow: hidden; /* Đảm bảo không có thanh cuộn ngang */
+}
+
+/* Footer content */
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Phân phối đều các phần tử */
+  padding: 1rem;
+  border-bottom: 1px solid #fff;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến tổng chiều rộng */
+  flex: 1; /* Cho phép phần này co giãn để phần scroll-text nằm ở dưới cùng */
+}
+
+/* Footer item */
+.footer-item {
+  flex: 1 1 25%; /* Các phần tử có thể co giãn, với 4 cột trên màn hình lớn */
+  padding: 0 1rem;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến tổng chiều rộng */
+}
+
+.footer-item h5 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.footer-item p {
+  margin: 0.5rem 0;
+}
+
+.footer-item a {
+  color: white; /* Màu chữ trắng cho liên kết */
+  text-decoration: none; /* Bỏ gạch dưới */
+}
+
+.footer-item a:hover {
+  text-decoration: underline; /* Thêm gạch dưới khi hover (tuỳ chọn) */
+}
+
+/* Scroll text */
+.scroll-text {
+  background-color: #05468b; /* Xanh đậm cho phần chữ */
+  color: white;
+  text-align: center;
+  padding: 0.5rem;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến tổng chiều rộng */
+  width: 100%; /* Mở rộng hết chiều ngang của phần tử cha */
+  margin: 0; /* Đảm bảo không có margin làm giảm chiều rộng */
+}
+
+.scroll-text span {
+  display: inline-block; /* Đảm bảo văn bản đứng im */
+  padding: 0; /* Không cần padding thêm */
+  white-space: nowrap; /* Giữ văn bản không bị xuống dòng */
+}
+
+.scroll-text a {
+  color: white; /* Màu chữ trắng cho liên kết */
+  text-decoration: none;
+}

@@ -1,0 +1,39 @@
+/* src/Home.css */
+
+/* Cài đặt cho Container chính của trang Home */
+.container-home {
+  padding: 0;
+  margin: 0; /* Đảm bảo không có margin làm giảm chiều rộng */
+}
+
+/* Cài đặt cho phần hình ảnh carousel */
+.img-carousel {
+  width: 100%;
+  height: auto;
+}
+
+/* Cài đặt cho phần giới thiệu */
+.intro-section {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Cài đặt cho thư viện hình ảnh */
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Cài đặt cho từng mục trong thư viện hình ảnh */
+.gallery-item {
+  margin: 10px;
+  text-align: center;
+}
+
+/* Cài đặt cho hình ảnh trong các mục thư viện */
+.gallery-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* Đảm bảo hình ảnh không bị kéo dãn */
+}
