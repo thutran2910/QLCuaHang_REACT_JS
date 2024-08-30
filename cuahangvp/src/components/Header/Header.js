@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Carousel, Container, Dropdown, Form, Button, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
+import apiClient, { endpoints } from '../../configs/API';
 
 const Header = () => {
     const [categories, setCategories] = useState([]);
@@ -12,19 +13,18 @@ const Header = () => {
     ];
 
     useEffect(() => {
-        // Fetch categories from the API
+        // Fetch categories from the API using axios
         const fetchCategories = async () => {
-            try {
-                const response = await fetch('http://192.168.1.220:8000/category/');
-                const data = await response.json();
-                setCategories(data);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
+          try {
+            const response = await apiClient.get(endpoints.category);
+            setCategories(response.data);
+          } catch (error) {
+            console.error('Error fetching categories:', error);
+          }
         };
-
+    
         fetchCategories();
-    }, []);
+      }, []);
 
     return (
         <header className="header-container">

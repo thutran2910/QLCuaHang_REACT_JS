@@ -1,39 +1,116 @@
-/* src/Home.css */
-
-/* Cài đặt cho Container chính của trang Home */
-.container-home {
-  padding: 0;
-  margin: 0; /* Đảm bảo không có margin làm giảm chiều rộng */
+/* Đảm bảo rằng toàn bộ không gian có thể chứa Footer */
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
-/* Cài đặt cho phần hình ảnh carousel */
-.img-carousel {
-  width: 100%;
-  height: auto;
+/* Phần chính */
+.main-content {
+  min-height: calc(100vh - 120px); /* Đảm bảo nội dung không bị đè lên Footer, tùy chỉnh nếu cần */
 }
 
-/* Cài đặt cho phần giới thiệu */
-.intro-section {
-  text-align: center;
-  margin: 20px 0;
+/* Featured products section */
+.featured-products {
+  padding: 20px;
 }
 
-/* Cài đặt cho thư viện hình ảnh */
-.image-gallery {
+.product-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.7cm; /* Khoảng cách giữa các sản phẩm nhỏ lại */
 }
 
-/* Cài đặt cho từng mục trong thư viện hình ảnh */
-.gallery-item {
-  margin: 10px;
+.product-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 250px;
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Đảm bảo phần tử chiếm hết không gian */
 }
 
-/* Cài đặt cho hình ảnh trong các mục thư viện */
-.gallery-item img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover; /* Đảm bảo hình ảnh không bị kéo dãn */
+.product-image {
+  width: 100%;
+  height: 250px; /* Chiều cao ảnh bằng chiều rộng */
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+  border-radius: 4px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px; /* Khoảng cách giữa các thông tin sản phẩm nhỏ hơn */
+  margin-top: 5px;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.product-price {
+  font-size: 20px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.product-discount, .product-stock {
+  font-size: 14px;
+  margin: 0; /* Loại bỏ khoảng cách mặc định */
+}
+
+.product-discount {
+  color: #e74c3c; /* Màu đỏ để nổi bật */
+  font-weight: bold; /* In đậm giảm giá */
+}
+
+.product-stock {
+  color: #666; /* Màu chữ nhẹ để không quá nổi bật */
+}
+
+/* Đặt giảm giá và số lượng tồn kho trên cùng một hàng */
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px; /* Khoảng cách giữa các thông tin nhỏ hơn */
+  margin-top: 5px;
+}
+
+.product-info-row {
+  display: flex;
+  justify-content: space-between; /* Đặt thông tin trên cùng một hàng */
+  align-items: center; /* Canh giữa theo chiều dọc */
+}
+
+.button-group {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.btn-add-to-cart {
+  background-color: #28a745; /* Màu xanh lá cho nút thêm vào giỏ hàng */
+}
+
+.btn-add-to-cart:hover {
+  background-color: #218838;
 }
