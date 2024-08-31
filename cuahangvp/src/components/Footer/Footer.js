@@ -17,15 +17,15 @@ const Footer = () => {
         </MDBCol>
         <MDBCol md='3' className='footer-item'>
           <h5>Các chính sách</h5>
-          <p><a href='/register'>Điều khoản sử dụng</a></p>
-          <p><a href='/login'>Chính sách bảo mật</a></p>
-          <p><a href='/search'>Chính sách bán hàng</a></p>
+          <p><a href='/terms'>Điều khoản sử dụng</a></p>
+          <p><a href='/security'>Chính sách bảo mật</a></p>
+          <p><a href='/terms2'>Chính sách bán hàng</a></p>
         </MDBCol>
         <MDBCol md='3' className='footer-item'>
           <h5>Hỗ trợ khách hàng</h5>
           <p><a href='/guide'>Hướng dẫn mua hàng</a></p>
-          <p><a href='/terms'>Hướng dẫn thanh toán</a></p>
-          <p><a href='/payment'>Câu hỏi thường gặp</a></p>
+          <p><a href='/payment'>Hướng dẫn thanh toán</a></p>
+          <p><a href='/question'>Câu hỏi thường gặp</a></p>
         </MDBCol>
         <MDBCol md='3' className='footer-item'>
           <h5>Thông tin liên hệ</h5>

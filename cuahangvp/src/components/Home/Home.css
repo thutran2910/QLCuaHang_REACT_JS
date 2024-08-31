@@ -1,116 +1,122 @@
-/* Đảm bảo rằng toàn bộ không gian có thể chứa Footer */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-/* Phần chính */
+/* Container chính của nội dung */
 .main-content {
-  min-height: calc(100vh - 120px); /* Đảm bảo nội dung không bị đè lên Footer, tùy chỉnh nếu cần */
+  padding: 20px; /* Padding cho nội dung chính */
 }
 
-/* Featured products section */
+/* Phần sản phẩm nổi bật */
 .featured-products {
-  padding: 20px;
+  margin-top: 20px; /* Khoảng cách từ phần trên cùng */
 }
 
+/* Danh sách sản phẩm */
 .product-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.7cm; /* Khoảng cách giữa các sản phẩm nhỏ lại */
+  flex-wrap: wrap; /* Cho phép các item xuống dòng nếu cần */
+  gap: 20px; /* Khoảng cách giữa các sản phẩm */
 }
 
+/* Item sản phẩm */
 .product-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  width: 250px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Đảm bảo phần tử chiếm hết không gian */
+  border: 1px solid #ddd; /* Đường viền nhẹ cho sản phẩm */
+  border-radius: 4px; /* Bo góc cho sản phẩm */
+  overflow: hidden; /* Đảm bảo hình ảnh không tràn ra ngoài */
+  background-color: #fff; /* Màu nền trắng cho item sản phẩm */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ cho sản phẩm */
+  width: calc(25% - 20px); /* Chiều rộng 1/4 của container chính */
+  box-sizing: border-box; /* Bao gồm border và padding trong kích thước chiều rộng */
+  transition: transform 0.3s ease; /* Hiệu ứng chuyển động khi phóng to */
+  position: relative; /* Để áp dụng hiệu ứng phóng to chính xác */
 }
 
+/* Hiệu ứng phóng to nhẹ khi rê chuột vào sản phẩm */
+.product-item:hover {
+  transform: scale(1.03); /* Phóng to sản phẩm một chút */
+}
+
+/* Khung chứa hình ảnh sản phẩm */
+.product-image-container {
+  overflow: hidden; /* Đảm bảo ảnh không bị tràn ra ngoài khung */
+}
+
+/* Hình ảnh sản phẩm */
 .product-image {
-  width: 100%;
-  height: 250px; /* Chiều cao ảnh bằng chiều rộng */
-  object-fit: cover; /* Đảm bảo ảnh không bị méo */
-  border-radius: 4px;
+  width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của khung chứa */
+  height: auto; /* Đảm bảo chiều cao tự động dựa trên chiều rộng để giữ tỷ lệ */
+  transition: transform 0.3s ease; /* Hiệu ứng chuyển động khi phóng to */
 }
 
+/* Hiệu ứng phóng to nhẹ khi rê chuột vào hình ảnh sản phẩm */
+.product-item:hover .product-image {
+  transform: scale(1.05); /* Phóng to hình ảnh một chút */
+}
+
+/* Chi tiết sản phẩm */
 .product-details {
-  display: flex;
-  flex-direction: column;
-  gap: 3px; /* Khoảng cách giữa các thông tin sản phẩm nhỏ hơn */
-  margin-top: 5px;
+  padding: 10px; /* Padding bên trong chi tiết sản phẩm */
 }
 
+/* Tên sản phẩm */
 .product-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 5px 0;
+  font-size: 16px; /* Kích thước chữ cho tên sản phẩm */
+  margin: 0; /* Xóa margin mặc định */
 }
 
+/* Giá sản phẩm */
 .product-price {
-  font-size: 20px;
-  color: #333;
-  margin: 5px 0;
+  font-size: 14px; /* Kích thước chữ cho giá sản phẩm */
+  color: #333; /* Màu chữ cho giá sản phẩm */
+  margin: 10px 0; /* Khoảng cách trên và dưới */
 }
 
-.product-discount, .product-stock {
-  font-size: 14px;
-  margin: 0; /* Loại bỏ khoảng cách mặc định */
-}
-
-.product-discount {
-  color: #e74c3c; /* Màu đỏ để nổi bật */
-  font-weight: bold; /* In đậm giảm giá */
-}
-
-.product-stock {
-  color: #666; /* Màu chữ nhẹ để không quá nổi bật */
-}
-
-/* Đặt giảm giá và số lượng tồn kho trên cùng một hàng */
-.product-details {
-  display: flex;
-  flex-direction: column;
-  gap: 3px; /* Khoảng cách giữa các thông tin nhỏ hơn */
-  margin-top: 5px;
-}
-
+/* Dòng thông tin sản phẩm */
 .product-info-row {
   display: flex;
-  justify-content: space-between; /* Đặt thông tin trên cùng một hàng */
-  align-items: center; /* Canh giữa theo chiều dọc */
+  justify-content: space-between; /* Đặt các thông tin vào hai đầu */
+  font-size: 12px; /* Kích thước chữ cho thông tin khác */
+  color: #666; /* Màu chữ cho thông tin khác */
 }
 
+/* Thông tin giảm giá */
+.product-discount {
+  color: #e74c3c; /* Màu chữ cho giảm giá */
+  font-weight: bold; /* Đậm chữ cho giảm giá */
+}
+
+/* Số lượng còn lại */
+.product-stock {
+  text-align: right; /* Canh phải cho số lượng còn lại */
+}
+
+/* Nhóm nút */
 .button-group {
+  margin-top: 10px; /* Khoảng cách từ phần chi tiết sản phẩm */
   display: flex;
   gap: 10px; /* Khoảng cách giữa các nút */
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
+/* Nút thêm vào giỏ hàng */
 .btn-add-to-cart {
-  background-color: #28a745; /* Màu xanh lá cho nút thêm vào giỏ hàng */
+  background-color: #065aae; /* Màu nền cho nút */
+  color: #fff; /* Màu chữ cho nút */
+  border: none; /* Xóa viền của nút */
+  padding: 10px 20px; /* Padding cho nút */
+  border-radius: 4px; /* Bo góc cho nút */
+  cursor: pointer; /* Con trỏ chuột khi hover */
 }
 
 .btn-add-to-cart:hover {
-  background-color: #218838;
+  background-color: #054b8e; /* Màu nền khi hover */
+}
+
+button {
+  background-color: #065aae; /* Màu nền cho các nút khác */
+  color: #fff; /* Màu chữ cho các nút khác */
+  border: none; /* Xóa viền của nút */
+  padding: 10px 20px; /* Padding cho các nút */
+  border-radius: 4px; /* Bo góc cho các nút */
+  cursor: pointer; /* Con trỏ chuột khi hover */
+}
+
+button:hover {
+  background-color: #054b8e; /* Màu nền khi hover */
 }
