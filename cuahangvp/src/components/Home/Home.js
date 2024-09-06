@@ -6,6 +6,7 @@ const Home = ({ category, searchTerm }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(''); // Thông báo
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,13 +24,21 @@ const Home = ({ category, searchTerm }) => {
           url = endpoints.discountedProducts;
         }
 
-        console.log('Fetching from URL:', url); // Kiểm tra URL
         const response = await apiClient.get(url);
-        console.log('Fetched products:', response.data); // Kiểm tra dữ liệu nhận được
-        setProducts(response.data);
+
+        // Kiểm tra dữ liệu nhận được từ API
+        console.log('Dữ liệu nhận được:', response.data);
+
+        // Chuyển đổi giá từ chuỗi thành số thực
+        const productsWithCorrectPrice = response.data.map(product => ({
+          ...product,
+          price: parseFloat(product.price) // Chuyển đổi giá thành số thực
+        }));
+
+        setProducts(productsWithCorrectPrice);
       } catch (error) {
-        console.error('Error fetching products:', error);
         setError('Có lỗi xảy ra khi tải dữ liệu.');
+        console.error('Error fetching products:', error);
       } finally {
         setLoading(false);
       }
@@ -38,8 +47,31 @@ const Home = ({ category, searchTerm }) => {
     fetchProducts();
   }, [category, searchTerm]);
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  };
+
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await apiClient.post(endpoints.cartItems, {
+        product: productId,
+        quantity: 1
+      });
+
+      if (response.status === 201) {
+        setMessage('Sản phẩm đã được thêm vào giỏ hàng!');
+      } else {
+        setMessage('Không thể thêm sản phẩm vào giỏ hàng.');
+      }
+    } catch (error) {
+      setMessage('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+      console.error('Error adding to cart:', error);
+    }
+  };
+
   return (
     <main className='main-content'>
+      {message && <div className="alert alert-info">{message}</div>}
       <section className='featured-products'>
         <h2>
           {searchTerm
@@ -60,7 +92,7 @@ const Home = ({ category, searchTerm }) => {
                 <div className='product-details'>
                   <h3 className='product-name'>{product.name}</h3>
                   <p className='product-price'>
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}
+                    {formatCurrency(product.price)}
                   </p>
                   <div className='product-info-row'>
                     {product.discount > 0 && (
@@ -71,7 +103,9 @@ const Home = ({ category, searchTerm }) => {
                     <p className='product-stock'>{product.stock_quantity} còn lại</p>
                   </div>
                   <div className='button-group'>
-                    <button className='btn-add-to-cart'>Thêm vào giỏ hàng</button>
+                    <button className='btn-add-to-cart' onClick={() => handleAddToCart(product.id)}>
+                      Thêm vào giỏ hàng
+                    </button>
                     <button>Mua ngay</button>
                   </div>
                 </div>

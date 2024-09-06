@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel, Container, Dropdown, Form, Button, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';  // Import Link từ react-router-dom
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
 import apiClient, { endpoints } from '../../configs/API';
@@ -93,16 +94,18 @@ const Header = ({ onCategorySelect, onSearch }) => {
           <Nav.Link href="#news" className="ms-3">
             Báo điện tử
           </Nav.Link>
-          <Nav.Link href="#cart" className="ms-3">
+
+          <Nav.Link as={Link} to="/cart" className="ms-3">  {/* Sử dụng Link để điều hướng */}
             <i className="bi bi-cart"></i> Giỏ hàng
           </Nav.Link>
+          
           <Dropdown className="ms-3">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
               Tài khoản
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item href="#action/3.1">Đăng nhập</Dropdown.Item>
-              <Dropdown.Item href="#action/3.2">Đăng xuất</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/register">Đăng ký</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Container>
