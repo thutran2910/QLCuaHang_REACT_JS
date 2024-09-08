@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Carousel, Container, Dropdown, Form, Button, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';  // Import Link từ react-router-dom
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
-import apiClient, { endpoints } from '../../configs/API';
+import apiClient, { endpoints, removeAuthToken } from '../../configs/API'; // Import removeAuthToken
+import { MyUserContext, MyDispatchContext } from '../../configs/Contexts';
 
 const Header = ({ onCategorySelect, onSearch }) => {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const user = useContext(MyUserContext); // Sử dụng context để lấy thông tin người dùng
+  const dispatch = useContext(MyDispatchContext);
+  const navigate = useNavigate();
   const images = [
     'https://via.placeholder.com/1200x400?text=Slide+1',
     'https://via.placeholder.com/1200x400?text=Slide+2',
@@ -39,6 +43,12 @@ const Header = ({ onCategorySelect, onSearch }) => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(searchTerm);
+  };
+
+  const handleLogout = () => {
+    removeAuthToken();  // Xóa token
+    dispatch({ type: 'logout' }); // Đăng xuất
+    navigate('/');  // Quay về trang chủ
   };
 
   return (
@@ -101,11 +111,17 @@ const Header = ({ onCategorySelect, onSearch }) => {
           
           <Dropdown className="ms-3">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Tài khoản
+              {user ? `Xin chào, ${user.username}` : 'Tài khoản'}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#action/3.1">Đăng nhập</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/register">Đăng ký</Dropdown.Item>
+              {!user ? (
+                <>
+                  <Dropdown.Item as={Link} to="/login">Đăng nhập</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/register">Đăng ký</Dropdown.Item>
+                </>
+              ) : (
+                <Dropdown.Item onClick={handleLogout}>Đăng xuất</Dropdown.Item>
+              )}
             </Dropdown.Menu>
           </Dropdown>
         </Container>

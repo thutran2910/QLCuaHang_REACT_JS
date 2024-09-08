@@ -3,16 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { authApi, setAuthToken, endpoints } from '../../configs/API';
 import { MyDispatchContext } from '../../configs/Contexts';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [userType, setUserType] = useState('regular');
-  const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState('');
   const dispatch = useContext(MyDispatchContext);
 
@@ -32,7 +28,6 @@ const Login = () => {
       };
 
       const res = await authApi().post(endpoints.login, formData, config);
-
       const token = res.data.access_token;
       console.log('Login successful, token:', token);
       setAuthToken(token);
@@ -47,15 +42,10 @@ const Login = () => {
         payload: user,
       });
 
-      if (user.is_superuser !== (userType === 'superuser')) {
-        setError('Đăng nhập không thành công');
-        return;
-      }
-
       navigate('/');
     } catch (ex) {
       console.error('Login error', ex);
-      setError('Vui lòng nhập lại username hoặc password');
+      setError('Vui lòng nhập lại email hoặc password');
     }
   };
 
@@ -64,23 +54,10 @@ const Login = () => {
       <div style={styles.containerLogin}>
         <h1 style={styles.title}>ĐĂNG NHẬP</h1>
         <Form>
-          <Form.Group controlId="formBasicUserType">
-            <Form.Select
-              value={userType}
-              onChange={(e) => setUserType(e.target.value)}
-              style={{ ...styles.input, ...(isFocused ? styles.inputFocused : {}) }}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-            >
-              <option value="regular">Cư dân</option>
-              <option value="superuser">Quản trị viên</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicUsername">
+          <Form.Group controlId="formBasicEmail">
             <Form.Control
-              type="text"
-              placeholder="Tên đăng nhập..."
+              type="username"
+              placeholder="Username..."
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               style={styles.input}
@@ -101,7 +78,7 @@ const Login = () => {
               style={styles.passwordToggle}
               onClick={() => setSecureTextEntry(!secureTextEntry)}
             >
-              {secureTextEntry ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              {secureTextEntry ? 'Show' : 'Hide'}
             </Button>
           </Form.Group>
           {error && (
@@ -142,10 +119,6 @@ const styles = {
   },
   input: {
     marginBottom: '15px',
-  },
-  inputFocused: {
-    borderColor: '#007bff',
-    boxShadow: '0 0 0 0.2rem rgba(38, 143, 255, 0.25)',
   },
   positionRelative: {
     position: 'relative',

@@ -1,18 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useReducer } from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { MyUserContext, MyDispatchContext, MyUserReducer } from './configs/Contexts';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const Main = () => {
+  const [user, dispatch] = useReducer(MyUserReducer, null);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+  return (
+    <MyUserContext.Provider value={user}>
+      <MyDispatchContext.Provider value={dispatch}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </MyDispatchContext.Provider>
+    </MyUserContext.Provider>
+  
+  );
+};
+
+ReactDOM.render(<Main />, document.getElementById('root'));
 
 reportWebVitals();

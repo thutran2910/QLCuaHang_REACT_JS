@@ -11,12 +11,12 @@ export const endpoints = {
   cartDetail: (cartId) => `/cart/${cartId}/`,  // Endpoint mới để lấy thông tin giỏ hàng
   user:'/user/',
   login: '/o/token/',
-  currentUser: '/current_user/',
+  currentUser: '/user/current-user/',
 };
 
 export const setAuthToken = (token) => {
   try {
-    localStorage.setItem('access_token', token);
+    localStorage.setItem('access_token', token);  // Đảm bảo bạn đang lưu token đúng tên
     console.log('Token set successfully:', token);
   } catch (error) {
     console.error('Error setting token:', error);
@@ -38,6 +38,10 @@ export const getAuthToken = () => {
   }
 };
 
+export const removeAuthToken = () => {
+  localStorage.removeItem('access_token');  // Đảm bảo tên token đúng
+};
+
 export const authApi = () => {
   try {
     const token = getAuthToken();
@@ -52,6 +56,7 @@ export const authApi = () => {
     throw error;
   }
 };
+
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
