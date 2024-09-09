@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.0.102:8000/';
+const BASE_URL = 'http://192.168.1.222:8000/';
 
 export const endpoints = {
   category: '/category/',
@@ -8,10 +8,12 @@ export const endpoints = {
   productsByCategory: (categoryId) => `/category/${categoryId}/products/`,
   searchProducts: (searchTerm) => `/product/?q=${searchTerm}`, // Đường dẫn cho tìm kiếm sản phẩm
   cartItems: '/cartitem/',
-  cartDetail: (cartId) => `/cart/${cartId}/`,  // Endpoint mới để lấy thông tin giỏ hàng
+  cartDetail: (cartId) => `/cart/${cartId}/`,  // Endpoint truy cập vô giỏ hàng
+  cartItemDetail: (id) => `/cartitem/${id}/`,  // Endpoint để lấy thông tin chi tiết của CartItem
   user:'/user/',
   login: '/o/token/',
   currentUser: '/user/current-user/',
+  electronicNews: '/electronicnews/'
 };
 
 export const setAuthToken = (token) => {

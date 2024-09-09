@@ -101,8 +101,8 @@ const Header = ({ onCategorySelect, onSearch }) => {
             <Button variant="outline-light" type="submit">Tìm kiếm</Button>
           </Form>
 
-          <Nav.Link href="#news" className="ms-3">
-            Báo điện tử
+          <Nav.Link as={Link} to="/news" className="ms-3">  {/* Sử dụng Link để điều hướng */}
+            <i className="bi bi-cart"></i> Truyện hài
           </Nav.Link>
 
           <Nav.Link as={Link} to="/cart" className="ms-3">  {/* Sử dụng Link để điều hướng */}

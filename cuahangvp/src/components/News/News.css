@@ -1,0 +1,49 @@
+.news-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+.news-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    position: relative;
+}
+
+.news-title-container {
+    background-color: #c90b0b2c; /* Nền xanh dương nhẹ */
+    color: white; /* Chữ trắng */
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.news-title {
+    margin: 0;
+    font-size: 1.2em; /* Thay đổi kích thước chữ tiêu đề */
+}
+
+.news-date {
+    font-size: 0.8em; /* Thay đổi kích thước chữ ngày tháng */
+    color: #f0f0f0; /* Màu chữ sáng hơn trên nền tối */
+    text-align: right;
+    margin: -10px 0 10px;
+    font-style: italic; /* Chữ in nghiêng */
+}
+
+.news-content {
+    background-color: #f0f0f0; /* Nền màu xám */
+    color: #333; /* Chữ đen nhẹ */
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 0; /* Ẩn nội dung */
+    overflow: hidden;
+    opacity: 0; /* Ẩn nội dung */
+    transition: max-height 1s ease-out, opacity 0.5s ease; /* Hiệu ứng mờ dần và mở rộng */
+    white-space: pre-wrap; /* Giữ nguyên các xuống dòng và khoảng trắng */
+}
+
+.news-content.expanded {
+    max-height: 1000px; /* Đặt chiều cao tối đa đủ lớn để chứa toàn bộ nội dung */
+    opacity: 1; /* Hiển thị nội dung */
+}

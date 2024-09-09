@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import apiClient, { endpoints } from '../../configs/API';  
+import apiClient, { endpoints } from '../../configs/API';
 import './Cart.css';
+
+// Định nghĩa hàm formatCurrency
+const formatCurrency = (value) => {
+  if (isNaN(value)) return value;
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 3, // Hiển thị số thập phân
+    maximumFractionDigits: 3  // Hiển thị số thập phân
+  }).format(value);
+};
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -34,11 +45,14 @@ const Cart = () => {
   }, [cartId]);
 
   const handleQuantityChange = async (itemId, newQuantity) => {
+    if (newQuantity < 1) return; // Không cho phép số lượng nhỏ hơn 1
+
     try {
       const response = await apiClient.patch(endpoints.cartItemDetail(itemId), { quantity: newQuantity });
       if (response.status === 200) {
+        const updatedItem = response.data;
         setCartItems(cartItems.map(item =>
-          item.id === itemId ? { ...item, quantity: newQuantity } : item
+          item.id === itemId ? updatedItem : item
         ));
       } else {
         setError('Không thể cập nhật số lượng.');
@@ -57,26 +71,63 @@ const Cart = () => {
         <p>{error}</p>
       ) : cartItems.length > 0 ? (
         <div className='cart-list'>
-          {cartItems.map(item => (
-            <div className='cart-item' key={item.id}>
-              <img src={item.product.image_url} alt={item.product.name} className='cart-item-image' />
-              <div className='cart-item-details'>
-                <h3 className='cart-item-name'>{item.product.name}</h3>
-                <p className='cart-item-price'>
-                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}
-                </p>
-                <p className='cart-item-discount'>
-                  Giảm giá: {item.product.discount * 100}%
-                </p>
-                <input
-                  type='number'
-                  value={item.quantity}
-                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                  min='1'
-                />
+          {cartItems.map(item => {
+            const originalPrice = parseFloat(item.product.price);
+            const discount = parseFloat(item.product.discount);
+            const quantity = item.quantity;
+            const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice; // Giá sau giảm
+            const totalOriginalPrice = originalPrice * quantity; // Tổng giá gốc
+            const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice; // Tổng giá giảm
+
+            return (
+              <div className='cart-item' key={item.id}>
+                <img src={item.product.image_url} alt={item.product.name} className='cart-item-image' />
+                <div className='cart-item-details'>
+                  <h3 className='cart-item-name'>{item.product.name}</h3>
+                  <div className={`cart-item-price ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
+                    {discount > 0 ? (
+                      <>
+                        <p className='original-price'>
+                          {formatCurrency(originalPrice)}
+                        </p>
+                        <p className='discounted-price'>
+                          {formatCurrency(discountedPrice)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className='original-price'>
+                        {formatCurrency(originalPrice)}
+                      </p>
+                    )}
+                  </div>
+                  {discount > 0 && (
+                    <div className='cart-item-discount'>-{Math.round(discount * 100)}%</div>
+                  )}
+                  <div className='cart-item-quantity'>
+                    <button onClick={() => handleQuantityChange(item.id, Math.max(item.quantity - 1, 1))}>-</button>
+                    <input
+                      type='number'
+                      value={item.quantity}
+                      onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
+                      min='1'
+                    />
+                    <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</button>
+                  </div>
+                  <div className={`price-tong ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
+                    <span>Tổng giá:</span>
+                    <span className={discount > 0 ? 'original-price' : ''}>
+                      {formatCurrency(totalOriginalPrice)}
+                    </span>
+                    {discount > 0 && (
+                      <span className='discounted-price'>
+                        {formatCurrency(totalDiscountedPrice)}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <p>Giỏ hàng của bạn trống.</p>

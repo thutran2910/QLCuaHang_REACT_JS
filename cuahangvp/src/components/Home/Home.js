@@ -6,7 +6,7 @@ const Home = ({ category, searchTerm }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(''); // Thông báo
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,13 +27,16 @@ const Home = ({ category, searchTerm }) => {
         const response = await apiClient.get(url);
 
         // Kiểm tra dữ liệu nhận được từ API
-        console.log('Dữ liệu nhận được:', response.data);
+        console.log('Dữ liệu nhận được từ API:', response.data);
 
-        // Chuyển đổi giá từ chuỗi thành số thực
-        const productsWithCorrectPrice = response.data.map(product => ({
-          ...product,
-          price: parseFloat(product.price) // Chuyển đổi giá thành số thực
-        }));
+        const productsWithCorrectPrice = response.data.map(product => {
+          const price = parseFloat(product.price);
+          console.log('Giá sau khi chuyển đổi:', price);
+          return {
+            ...product,
+            price
+          };
+        });
 
         setProducts(productsWithCorrectPrice);
       } catch (error) {
@@ -48,7 +51,13 @@ const Home = ({ category, searchTerm }) => {
   }, [category, searchTerm]);
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    if (isNaN(value)) return value;
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3
+    }).format(value);
   };
 
   const handleAddToCart = async (productId) => {
@@ -86,31 +95,47 @@ const Home = ({ category, searchTerm }) => {
           <p>{error}</p>
         ) : products.length > 0 ? (
           <div className='product-list'>
-            {products.map(product => (
-              <div className='product-item' key={product.id}>
-                <img src={product.image_url} alt={product.name} className='product-image' />
-                <div className='product-details'>
-                  <h3 className='product-name'>{product.name}</h3>
-                  <p className='product-price'>
-                    {formatCurrency(product.price)}
-                  </p>
-                  <div className='product-info-row'>
-                    {product.discount > 0 && (
-                      <p className='product-discount'>
-                        Giảm giá {Math.round(product.discount * 100)}%
-                      </p>
+            {products.map(product => {
+              const originalPrice = product.price;
+              const discountedPrice = product.discount > 0 ? originalPrice * (1 - product.discount) : null;
+              const discountPercentage = product.discount > 0 ? Math.round(product.discount * 100) : 0;
+
+              return (
+                <div className='product-item' key={product.id}>
+                  <div className='product-image-container'>
+                    <img src={product.image_url} alt={product.name} className='product-image' />
+                    {discountedPrice !== null && (
+                      <div className='discount-tag'>-{discountPercentage}%</div>
                     )}
-                    <p className='product-stock'>{product.stock_quantity} còn lại</p>
                   </div>
-                  <div className='button-group'>
-                    <button className='btn-add-to-cart' onClick={() => handleAddToCart(product.id)}>
-                      Thêm vào giỏ hàng
-                    </button>
-                    <button>Mua ngay</button>
+                  <div className='product-details'>
+                    <h3 className='product-name'>{product.name}</h3>
+                    <div className='product-prices'>
+                      {discountedPrice === null ? (
+                        <p className='product-price normal-price'>
+                          {formatCurrency(originalPrice)}
+                        </p>
+                      ) : (
+                        <>
+                          <p className='product-price original-price'>
+                            {formatCurrency(originalPrice)}
+                          </p>
+                          <p className='product-price discounted-price'>
+                            {formatCurrency(discountedPrice)}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <div className='button-group'>
+                      <button className='btn-add-to-cart' onClick={() => handleAddToCart(product.id)}>
+                        Thêm vào giỏ
+                      </button>
+                      <button>Mua ngay</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p>Không có sản phẩm nào để hiển thị.</p>

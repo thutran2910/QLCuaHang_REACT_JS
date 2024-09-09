@@ -6,6 +6,8 @@ import Cart from './components/Cart/Cart';
 import Footer from './components/Footer/Footer';
 import Register from './components/User/Register';
 import Login from './components/User/Login';
+import News from './components/News/News';
+
 
 const App = () => {
   const [category, setCategory] = useState(null);
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/" element={<Home category={category} searchTerm={searchTerm} />} />
         <Route path="/home" element={<Home category={category} searchTerm={searchTerm} />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/news" element={<News />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>

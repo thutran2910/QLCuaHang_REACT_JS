@@ -1,3 +1,5 @@
+/* Home.css */
+
 /* Container chính của nội dung */
 .main-content {
   padding: 20px; /* Padding cho nội dung chính */
@@ -24,8 +26,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ cho sản phẩm */
   width: calc(25% - 20px); /* Chiều rộng 1/4 của container chính */
   box-sizing: border-box; /* Bao gồm border và padding trong kích thước chiều rộng */
+  position: relative; /* Để áp dụng hiệu ứng giảm giá đúng vị trí */
   transition: transform 0.3s ease; /* Hiệu ứng chuyển động khi phóng to */
-  position: relative; /* Để áp dụng hiệu ứng phóng to chính xác */
 }
 
 /* Hiệu ứng phóng to nhẹ khi rê chuột vào sản phẩm */
@@ -35,7 +37,7 @@
 
 /* Khung chứa hình ảnh sản phẩm */
 .product-image-container {
-  overflow: hidden; /* Đảm bảo ảnh không bị tràn ra ngoài khung */
+  position: relative; /* Để áp dụng khung giảm giá vào góc */
 }
 
 /* Hình ảnh sản phẩm */
@@ -50,6 +52,20 @@
   transform: scale(1.05); /* Phóng to hình ảnh một chút */
 }
 
+/* Khung giảm giá */
+.discount-tag {
+  position: absolute; /* Đặt vào góc phải của khung */
+  top: 10px; /* Khoảng cách từ trên cùng */
+  right: 10px; /* Khoảng cách từ cạnh phải */
+  background-color: #e74c3c; /* Màu nền đỏ cho khung giảm giá */
+  color: #fff; /* Màu chữ trắng */
+  padding: 5px 10px; /* Padding cho khung */
+  border-radius: 4px; /* Bo góc cho khung */
+  font-size: 12px; /* Kích thước chữ */
+  font-weight: bold; /* Đậm chữ */
+  text-align: center; /* Canh giữa chữ trong khung */
+}
+
 /* Chi tiết sản phẩm */
 .product-details {
   padding: 10px; /* Padding bên trong chi tiết sản phẩm */
@@ -61,62 +77,72 @@
   margin: 0; /* Xóa margin mặc định */
 }
 
+/* Container cho các giá */
+.product-prices {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa giá gốc và giá giảm */
+  align-items: center; /* Căn chỉnh giữa các giá */
+}
+
 /* Giá sản phẩm */
 .product-price {
   font-size: 14px; /* Kích thước chữ cho giá sản phẩm */
-  color: #333; /* Màu chữ cho giá sản phẩm */
-  margin: 10px 0; /* Khoảng cách trên và dưới */
+  margin: 0; /* Xóa margin mặc định */
 }
 
-/* Dòng thông tin sản phẩm */
-.product-info-row {
-  display: flex;
-  justify-content: space-between; /* Đặt các thông tin vào hai đầu */
-  font-size: 12px; /* Kích thước chữ cho thông tin khác */
-  color: #666; /* Màu chữ cho thông tin khác */
+.original-price {
+  text-decoration: line-through;
+  color: #888; /* Màu xám cho giá gốc */
+}
+
+.discounted-price {
+  color: #e74c3c; /* Màu đỏ cho giá sau giảm giá */
+  font-weight: bold; /* Đậm chữ cho giá sau giảm giá */
+}
+
+.normal-price {
+  color: #333; /* Màu chữ cho giá không giảm */
 }
 
 /* Thông tin giảm giá */
 .product-discount {
-  color: #e74c3c; /* Màu chữ cho giảm giá */
+  color: #e74c3c; /* Màu đỏ cho thông tin giảm giá */
   font-weight: bold; /* Đậm chữ cho giảm giá */
-}
-
-/* Số lượng còn lại */
-.product-stock {
-  text-align: right; /* Canh phải cho số lượng còn lại */
 }
 
 /* Nhóm nút */
 .button-group {
-  margin-top: 10px; /* Khoảng cách từ phần chi tiết sản phẩm */
+  margin-top: 10px; /* Khoảng cách từ phần thông tin sản phẩm */
   display: flex;
   gap: 10px; /* Khoảng cách giữa các nút */
 }
 
 /* Nút thêm vào giỏ hàng */
 .btn-add-to-cart {
-  background-color: #065aae; /* Màu nền cho nút */
-  color: #fff; /* Màu chữ cho nút */
-  border: none; /* Xóa viền của nút */
+  background-color: #007bff; /* Màu nền cho nút thêm vào giỏ hàng */
+  color: #fff; /* Màu chữ cho nút thêm vào giỏ hàng */
+  border: none; /* Xóa border của nút */
   padding: 10px 20px; /* Padding cho nút */
   border-radius: 4px; /* Bo góc cho nút */
-  cursor: pointer; /* Con trỏ chuột khi hover */
+  cursor: pointer; /* Hiển thị con trỏ khi rê chuột vào nút */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển động khi thay đổi màu nền */
 }
 
 .btn-add-to-cart:hover {
-  background-color: #054b8e; /* Màu nền khi hover */
+  background-color: #0056b3; /* Màu nền khi rê chuột vào nút */
 }
 
+/* Nút mua ngay */
 button {
-  background-color: #065aae; /* Màu nền cho các nút khác */
-  color: #fff; /* Màu chữ cho các nút khác */
-  border: none; /* Xóa viền của nút */
-  padding: 10px 20px; /* Padding cho các nút */
-  border-radius: 4px; /* Bo góc cho các nút */
-  cursor: pointer; /* Con trỏ chuột khi hover */
+  background-color: #28a745; /* Màu nền cho nút mua ngay */
+  color: #fff; /* Màu chữ cho nút mua ngay */
+  border: none; /* Xóa border của nút */
+  padding: 10px 20px; /* Padding cho nút */
+  border-radius: 4px; /* Bo góc cho nút */
+  cursor: pointer; /* Hiển thị con trỏ khi rê chuột vào nút */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển động khi thay đổi màu nền */
 }
 
 button:hover {
-  background-color: #054b8e; /* Màu nền khi hover */
+  background-color: #218838; /* Màu nền khi rê chuột vào nút mua ngay */
 }
