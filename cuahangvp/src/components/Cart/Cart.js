@@ -8,8 +8,8 @@ const formatCurrency = (value) => {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3
   }).format(value);
 };
 
@@ -77,6 +77,21 @@ const Cart = () => {
     }
   };
 
+  const handleRemoveItem = async (itemId) => {
+    try {
+      const api = user ? authApi() : apiClient;
+      const response = await api.delete(endpoints.cartItemDetail(itemId));
+
+      if (response.status === 204) {
+        setCartItems(cartItems.filter(item => item.id !== itemId));
+      } else {
+        setError('Không thể xóa sản phẩm.');
+      }
+    } catch (error) {
+      setError('Có lỗi xảy ra khi xóa sản phẩm.');
+    }
+  };
+
   return (
     <main className='cart-content'>
       <h2>Chi tiết giỏ hàng</h2>
@@ -102,17 +117,11 @@ const Cart = () => {
                   <div className={`cart-item-price ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
                     {discount > 0 ? (
                       <>
-                        <p className='original-price'>
-                          {formatCurrency(originalPrice)}
-                        </p>
-                        <p className='discounted-price'>
-                          {formatCurrency(discountedPrice)}
-                        </p>
+                        <p className='original-price'>{formatCurrency(originalPrice)}</p>
+                        <p className='discounted-price'>{formatCurrency(discountedPrice)}</p>
                       </>
                     ) : (
-                      <p className='original-price'>
-                        {formatCurrency(originalPrice)}
-                      </p>
+                      <p className='original-price'>{formatCurrency(originalPrice)}</p>
                     )}
                   </div>
                   {discount > 0 && (
@@ -129,7 +138,7 @@ const Cart = () => {
                     <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</button>
                   </div>
                   <div className={`price-tong ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
-                    <span>Tổng giá:</span>
+                    <span>Tổng giá: </span>
                     <span className={discount > 0 ? 'original-price' : ''}>
                       {formatCurrency(totalOriginalPrice)}
                     </span>
@@ -139,6 +148,9 @@ const Cart = () => {
                       </span>
                     )}
                   </div>
+                  <button className='remove-item-button' onClick={() => handleRemoveItem(item.id)}>
+                    Xóa khỏi giỏ
+                  </button>
                 </div>
               </div>
             );

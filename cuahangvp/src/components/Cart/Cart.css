@@ -1,70 +1,86 @@
+/* Container chính */
 .cart-content {
   padding: 20px;
   font-family: Arial, sans-serif;
+  text-align: center; /* Đưa tiêu đề ra giữa */
 }
 
+/* Tiêu đề */
 .cart-content h2 {
-  text-align: center;
   margin-bottom: 20px;
 }
 
+/* Danh sách giỏ hàng */
 .cart-list {
   display: flex;
   flex-direction: column;
+  align-items: center; /* Căn giữa các sản phẩm trong danh sách */
 }
 
+/* Mỗi sản phẩm */
 .cart-item {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Thêm góc bo tròn cho sản phẩm */
   padding: 10px;
-  margin-bottom: 10px;
-  position: relative; /* Để có thể đặt thẻ giảm giá */
+  margin-bottom: 20px;
+  position: relative;
+  width: 80%; /* Đặt chiều rộng của khung sản phẩm */
+  max-width: 1200px; /* Đặt chiều rộng tối đa của khung sản phẩm */
 }
 
+/* Ảnh sản phẩm */
 .cart-item-image {
-  width: 100px;
-  height: 100px;
+  width: 120px; /* Kích thước ảnh lớn hơn */
+  height: 120px;
   object-fit: cover;
   margin-right: 20px;
+  border-radius: 8px; /* Bo tròn ảnh để đồng bộ với khung sản phẩm */
 }
 
+/* Chi tiết sản phẩm */
 .cart-item-details {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
+/* Tên sản phẩm */
 .cart-item-name {
-  font-size: 1.2em;
+  font-size: 1.4em; /* Kích thước chữ lớn hơn */
   margin-bottom: 10px;
 }
 
+/* Giá sản phẩm */
 .cart-item-price {
   display: flex;
   align-items: center;
-  font-size: 1.1em;
+  font-size: 1.2em;
   color: #333;
 }
 
-/* Chỉ áp dụng cho sản phẩm có giảm giá */
+/* Giá gốc với giảm giá */
 .cart-item-price.has-discount .original-price {
   text-decoration: line-through;
   color: #888;
   margin-right: 10px;
 }
 
+/* Giá đã giảm */
 .cart-item-price.has-discount .discounted-price {
   color: #f00;
   font-weight: bold;
 }
 
-/* Chỉ áp dụng cho sản phẩm không có giảm giá */
+/* Giá không giảm */
 .cart-item-price.no-discount .original-price {
-  color: #333; /* Giá không giảm giá vẫn giữ màu sắc bình thường */
-  text-decoration: none; /* Không có gạch dưới */
+  color: #333;
+  text-decoration: none;
 }
 
+/* Thẻ giảm giá */
 .cart-item-discount {
   position: absolute;
   top: 10px;
@@ -76,32 +92,77 @@
   border-radius: 3px;
 }
 
-input[type="number"] {
-  width: 60px;
-  padding: 5px;
-  font-size: 1em;
-  margin-left: auto;
-}
-
-.price-tong {
-  font-size: 1.1em;
+/* Nút tăng giảm số lượng */
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
   margin-top: 10px;
 }
 
-/* Chỉ áp dụng cho tổng giá của sản phẩm có giảm giá */
+/* Nút tăng và giảm */
+.cart-item-quantity button {
+  width: 40px; /* Kích thước của nút */
+  height: 40px;
+  font-size: 1.5em; /* Kích thước chữ */
+  border: 1px solid #75767b;
+  background-color: #b9b6b6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Căn giữa dấu + và - */
+  border-radius: 3px;
+  margin: 0 5px; /* Khoảng cách giữa nút và ô nhập số lượng */
+}
+
+/* Ô nhập số lượng */
+.cart-item-quantity input {
+  width: 60px; /* Kích thước của ô nhập số lượng */
+  height: 40px; /* Đặt chiều cao để đồng bộ với nút */
+  padding: 5px;
+  font-size: 1.2em;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+/* Tổng giá */
+.price-tong {
+  font-size: 1.2em;
+  margin-top: 10px;
+  display: flex;
+  align-items: center; /* Căn giữa giá gốc và giá đã giảm */
+}
+
+/* Tổng giá của sản phẩm có giảm giá */
 .price-tong.has-discount .original-price {
   text-decoration: line-through;
   color: #888;
   margin-right: 10px;
 }
 
+/* Tổng giá đã giảm */
 .price-tong.has-discount .discounted-price {
   color: #f00;
   font-weight: bold;
 }
 
-/* Chỉ áp dụng cho tổng giá của sản phẩm không có giảm giá */
+/* Tổng giá của sản phẩm không giảm giá */
 .price-tong.no-discount .original-price {
-  color: #333; /* Tổng giá không giảm giá vẫn giữ màu sắc bình thường */
-  text-decoration: none; /* Không có gạch dưới */
+  color: #333;
+  text-decoration: none;
+}
+
+/* Nút xóa khỏi giỏ hàng */
+.remove-item-button {
+  background-color: hsl(4, 72%, 71%);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px; /* Giảm padding để nút nhỏ lại */
+  font-size: 0.9em; /* Kích thước chữ */
+  cursor: pointer;
+  margin-top: 10px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
