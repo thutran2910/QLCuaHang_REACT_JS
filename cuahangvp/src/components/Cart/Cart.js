@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { endpoints } from '../../configs/API';
+import { MyUserContext } from '../../configs/Contexts';
 import './Cart.css';
 
 // Định nghĩa hàm formatCurrency
@@ -17,10 +18,12 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const cartId = 11; // Cứng mã hóa cartId là 11
+  const user = useContext(MyUserContext); // Nhận thông tin người dùng từ Context
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      const cartId = user ? user.cart_id : 11; // Sử dụng cart_id của người dùng hoặc giỏ hàng mặc định
+
       if (!cartId) return;  // Nếu không có cart_id, không thực hiện gọi API
 
       setLoading(true);
@@ -42,7 +45,7 @@ const Cart = () => {
     };
 
     fetchCartItems();
-  }, [cartId]);
+  }, [user]); // Theo dõi sự thay đổi của user
 
   const handleQuantityChange = async (itemId, newQuantity) => {
     if (newQuantity < 1) return; // Không cho phép số lượng nhỏ hơn 1
