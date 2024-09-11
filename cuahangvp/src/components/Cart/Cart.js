@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import apiClient, { endpoints } from '../../configs/API';
+import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Cart.css';
 
-// Định nghĩa hàm formatCurrency
 const formatCurrency = (value) => {
   if (isNaN(value)) return value;
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-    minimumFractionDigits: 3, // Hiển thị số thập phân
-    maximumFractionDigits: 3  // Hiển thị số thập phân
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   }).format(value);
 };
 
@@ -18,40 +17,53 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const user = useContext(MyUserContext); // Nhận thông tin người dùng từ Context
+  const user = useContext(MyUserContext);
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      const cartId = user ? user.cart_id : 11; // Sử dụng cart_id của người dùng hoặc giỏ hàng mặc định
+      let api = apiClient;  // Sử dụng apiClient mặc định
+      let cartId = 11;      // Giỏ hàng mặc định khi chưa đăng nhập
 
-      if (!cartId) return;  // Nếu không có cart_id, không thực hiện gọi API
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await apiClient.get(endpoints.cartDetail(cartId));
-        if (response.data && response.data.cart_items) {
-          setCartItems(response.data.cart_items);
-        } else {
-          setError('Dữ liệu không đúng định dạng.');
+      if (user) {
+        api = authApi();  // Sử dụng authApi khi người dùng đã đăng nhập
+        try {
+          const response = await api.get(endpoints.currentUserCart);  // Lấy giỏ hàng của người dùng hiện tại
+          if (response.data && response.data.cart_items) {
+            setCartItems(response.data.cart_items);
+          } else {
+            setError('Dữ liệu không đúng định dạng.');
+          }
+        } catch (error) {
+          console.error('Error fetching current user cart:', error);
+          setError('Có lỗi xảy ra khi tải giỏ hàng của người dùng.');
         }
-      } catch (error) {
-        setError('Có lỗi xảy ra khi tải giỏ hàng.');
-        console.error('Error fetching cart items:', error); // Ghi log lỗi
-      } finally {
-        setLoading(false);
+      } else {
+        try {
+          const response = await api.get(endpoints.cartDetail(cartId));  // Lấy giỏ hàng mặc định
+          if (response.data && response.data.cart_items) {
+            setCartItems(response.data.cart_items);
+          } else {
+            setError('Dữ liệu không đúng định dạng.');
+          }
+        } catch (error) {
+          console.error('Error fetching cart items:', error);
+          setError('Có lỗi xảy ra khi tải giỏ hàng.');
+        }
       }
+
+      setLoading(false);
     };
 
     fetchCartItems();
-  }, [user]); // Theo dõi sự thay đổi của user
+  }, [user]);
 
   const handleQuantityChange = async (itemId, newQuantity) => {
-    if (newQuantity < 1) return; // Không cho phép số lượng nhỏ hơn 1
+    if (newQuantity < 1) return;
 
     try {
-      const response = await apiClient.patch(endpoints.cartItemDetail(itemId), { quantity: newQuantity });
+      const api = user ? authApi() : apiClient;
+      const response = await api.patch(endpoints.cartItemDetail(itemId), { quantity: newQuantity });
+
       if (response.status === 200) {
         const updatedItem = response.data;
         setCartItems(cartItems.map(item =>
@@ -78,9 +90,9 @@ const Cart = () => {
             const originalPrice = parseFloat(item.product.price);
             const discount = parseFloat(item.product.discount);
             const quantity = item.quantity;
-            const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice; // Giá sau giảm
-            const totalOriginalPrice = originalPrice * quantity; // Tổng giá gốc
-            const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice; // Tổng giá giảm
+            const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
+            const totalOriginalPrice = originalPrice * quantity;
+            const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice;
 
             return (
               <div className='cart-item' key={item.id}>

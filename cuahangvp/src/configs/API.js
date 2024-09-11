@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const BASE_URL = 'http://192.168.0.104:8000/';
@@ -11,6 +10,7 @@ export const endpoints = {
   cartItems: '/cartitem/',
   cartDetail: (cartId) => `/cart/${cartId}/`,  // Endpoint truy cập vô giỏ hàng
   cartItemDetail: (id) => `/cartitem/${id}/`,  // Endpoint để lấy thông tin chi tiết của CartItem
+  currentUserCart: '/cart/current/',
   user:'/user/',
   login: '/o/token/',
   currentUser: '/user/current-user/',
