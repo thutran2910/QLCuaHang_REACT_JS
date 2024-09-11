@@ -1,6 +1,6 @@
-
-import React, { useState, useEffect } from 'react';
-import apiClient, { endpoints } from '../../configs/API';
+import React, { useState, useEffect, useContext } from 'react';
+import apiClient, { endpoints, authApi } from '../../configs/API';
+import { MyUserContext } from '../../configs/Contexts';
 import './Home.css';
 
 const Home = ({ category, searchTerm }) => {
@@ -8,6 +8,7 @@ const Home = ({ category, searchTerm }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
+  const user = useContext(MyUserContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -61,11 +62,15 @@ const Home = ({ category, searchTerm }) => {
     }).format(value);
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, quantity = 1) => {
     try {
-      const response = await apiClient.post(endpoints.cartItems, {
+      const api = user ? authApi() : apiClient; // Sử dụng authApi nếu đã đăng nhập
+      const cartId = user ? undefined : 11; // Sử dụng cartId cố định nếu không đăng nhập
+
+      const response = await api.post(endpoints.cartItems, {
         product: productId,
-        quantity: 1
+        quantity,
+        cartId
       });
 
       if (response.status === 201) {
