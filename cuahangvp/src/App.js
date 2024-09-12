@@ -6,6 +6,7 @@ import Cart from './components/Cart/Cart';
 import Footer from './components/Footer/Footer';
 import Register from './components/User/Register';
 import Login from './components/User/Login';
+import Product from './components/Product/Product';
 import News from './components/News/News';
 import { MyUserContext, MyDispatchContext, MyUserReducer } from './configs/Contexts';
 import { getAuthToken, authApi, endpoints } from './configs/API';
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/news" element={<News />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/product/:id" element={<Product /> } />/* Thêm route cho trang chi tiết sản phẩm */
           </Routes>
           <Footer />
         </Router>

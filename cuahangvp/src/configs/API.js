@@ -4,6 +4,7 @@ const BASE_URL = 'http://192.168.0.104:8000/';
 
 export const endpoints = {
   category: '/category/',
+  productDetail: '/product/', // Thêm endpoint chi tiết sản phẩm
   discountedProducts: '/discounted-products/',
   productsByCategory: (categoryId) => `/category/${categoryId}/products/`,
   searchProducts: (searchTerm) => `/product/?q=${searchTerm}`, // Đường dẫn cho tìm kiếm sản phẩm
@@ -14,7 +15,8 @@ export const endpoints = {
   user:'/user/',
   login: '/o/token/',
   currentUser: '/user/current-user/',
-  electronicNews: '/electronicnews/'
+  electronicNews: '/electronicnews/',
+  reviews: '/review/',
 };
 
 export const setAuthToken = (token) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { endpoints, authApi } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = ({ category, searchTerm }) => {
   const [products, setProducts] = useState([]);
@@ -51,6 +52,15 @@ const Home = ({ category, searchTerm }) => {
 
     fetchProducts();
   }, [category, searchTerm]);
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 2000); // Hiển thị thông báo trong 2 giây
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const formatCurrency = (value) => {
     if (isNaN(value)) return value;
@@ -109,7 +119,9 @@ const Home = ({ category, searchTerm }) => {
               return (
                 <div className='product-item' key={product.id}>
                   <div className='product-image-container'>
-                    <img src={product.image_url} alt={product.name} className='product-image' />
+                    <Link to={`/product/${product.id}`}>
+                      <img src={product.image_url} alt={product.name} className='product-image' />
+                    </Link>
                     {discountedPrice !== null && (
                       <div className='discount-tag'>-{discountPercentage}%</div>
                     )}
