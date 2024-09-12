@@ -190,3 +190,57 @@
 .review p {
   margin: 5px 0;
 }
+
+/* Phần đánh giá sản phẩm */
+.review-rating {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  font-size: 20px;
+  color: gray; /* Màu sắc mặc định của ngôi sao chưa được chọn */
+  margin-right: 2px;
+}
+
+.star.filled {
+  color: gold; /* Màu sắc của ngôi sao đã được chọn */
+}
+
+.review-date {
+  font-size: 0.8em; /* Chữ nhỏ hơn so với văn bản chính */
+  font-style: italic; /* Chữ in nghiêng */
+  color: gray; /* Màu sắc tùy chọn, có thể thay đổi theo ý thích */
+}
+
+/* Phần đánh giá sản phẩm */
+.product-reviews-section {
+  margin-top: 40px; /* Tạo khoảng cách giữa phần chi tiết sản phẩm và phần đánh giá */
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0; /* Đường viền phân cách với phần sản phẩm */
+  display: flex;
+  justify-content: space-between; /* Aligns heading and button on opposite ends */
+  align-items: center;
+}
+
+.product-reviews-section h2 {
+  font-size: 22px;
+  margin-bottom: 0; /* Remove margin to align with button */
+  font-weight: bold;
+}
+
+.write-review-button {
+  color: rgb(116, 112, 112); /* White text */
+  font-style: italic; /* Italic text */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.write-review-button:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+}
+
+

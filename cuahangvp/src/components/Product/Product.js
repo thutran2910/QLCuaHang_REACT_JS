@@ -94,6 +94,18 @@ const Product = () => {
     }
   };
 
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={`star ${i <= rating ? 'filled' : ''}`}>
+          &#9733; {/* Unicode cho ngôi sao đầy */}
+        </span>
+      );
+    }
+    return stars;
+  };
+
   return (
     <div className="product-page-container">
       {message && (
@@ -136,15 +148,21 @@ const Product = () => {
       </div>
       
       {/* Hiển thị đánh giá của sản phẩm */}
+      <div className="product-reviews-section">
+        <h2>Những đánh giá của khách hàng về sản phẩm</h2>
+        <h5 className="write-review-button">Viết đánh giá </h5>
+      </div>
       <div className="product-reviews">
-        <h2>Đánh giá sản phẩm</h2>
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
               <p><strong>{review.username}</strong> ({review.first_name} {review.last_name})</p>
-              <p>Đánh giá: {review.rating} sao</p>
+              {/* <p>Đánh giá: {review.rating} sao</p> */}
+              <div className="review-rating">
+                {renderStars(review.rating)} {/* Hiển thị ngôi sao dựa trên đánh giá */}
+              </div>
               <p>{review.comment}</p>
-              <p>Ngày tạo: {new Date(review.created_at).toLocaleDateString()}</p>
+              <p className="review-date">Ngày tạo: {new Date(review.created_at).toLocaleDateString()}</p>
             </div>
           ))
         ) : (
