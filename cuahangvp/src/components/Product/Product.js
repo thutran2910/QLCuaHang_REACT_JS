@@ -217,21 +217,26 @@ const Product = () => {
 
       {/* HIỆN BẢNG ĐÁNH GIÁ */}
       {isWritingReview && user && (
-        <div className="write-review-form">
+        <div className="write-review-box">
+          <button className="close-button" onClick={() => setIsWritingReview(false)}>X</button>
           <h3>Đánh giá sản phẩm</h3>
-          <label>
-            Số sao:
-            <select value={rating} onChange={(e) => setRating(parseInt(e.target.value))}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <option key={star} value={star}>{star}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Nhận xét:
-            <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
-          </label>
-          <button onClick={handleSubmitReview}>Gửi đánh giá</button>
+          <div className="rating-stars">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={`star ${star <= rating ? 'filled' : ''}`}
+                onClick={() => setRating(star)}
+              >
+                &#9733;
+              </span>
+            ))}
+          </div>
+          <textarea
+            placeholder="Nhập nhận xét của bạn"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <button className="submit-button" onClick={handleSubmitReview}>Gửi đánh giá</button>
         </div>
       )}
     </div>
