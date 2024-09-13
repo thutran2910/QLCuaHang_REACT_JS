@@ -8,6 +8,7 @@ import Register from './components/User/Register';
 import Login from './components/User/Login';
 import Product from './components/Product/Product';
 import News from './components/News/News';
+import Order from './components/Order/Order';
 import { MyUserContext, MyDispatchContext, MyUserReducer } from './configs/Contexts';
 import { getAuthToken, authApi, endpoints } from './configs/API';
 
@@ -54,7 +55,8 @@ const App = () => {
             <Route path="/news" element={<News />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/product/:id" element={<Product /> } />/* Thêm route cho trang chi tiết sản phẩm */
+            <Route path="/product/:id" element={<Product /> } />  /* Thêm route cho trang chi tiết sản phẩm */
+            <Route path="/order/" element={<Order />} />
           </Routes>
           <Footer />
         </Router>

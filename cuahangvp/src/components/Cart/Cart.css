@@ -166,3 +166,11 @@
   bottom: 10px;
   right: 10px;
 }
+
+.btn-dh {
+  background-color: rgb(218, 86, 86);
+  color: #fff;
+}
+.btn-dh:hover{
+  background-color: #b30000;
+}

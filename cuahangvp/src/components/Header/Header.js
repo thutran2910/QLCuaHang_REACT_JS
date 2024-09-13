@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from 'react';
 import { Carousel, Container, Dropdown, Form, Button, Nav } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -103,7 +102,7 @@ const Header = ({ onCategorySelect, onSearch }) => {
           </Form>
 
           <Nav.Link as={Link} to="/news" className="ms-3">  {/* Sử dụng Link để điều hướng */}
-            <i className="bi bi-cart"></i> Truyện hài
+            <i className="bi bi-cart"></i> Blog
           </Nav.Link>
 
           <Nav.Link as={Link} to="/cart" className="ms-3">  {/* Sử dụng Link để điều hướng */}

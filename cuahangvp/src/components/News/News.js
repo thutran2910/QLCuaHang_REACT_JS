@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { authApi } from '../../configs/API';
-import './News.css'; // Thêm CSS tùy chỉnh của bạn
+import './News.css';
 
 const News = () => {
     const [news, setNews] = useState([]);
-    const [expandedIds, setExpandedIds] = useState(new Set());
+    const [expandedId, setExpandedId] = useState(null);
 
     useEffect(() => {
         // Fetch data from API
@@ -12,6 +12,9 @@ const News = () => {
             try {
                 const response = await authApi().get('/electronicnews/');
                 setNews(response.data);
+                if (response.data.length > 0) {
+                    setExpandedId(response.data[0].id); // Set the first item as expanded by default
+                }
             } catch (error) {
                 console.error("There was an error fetching the news!", error);
             }
@@ -20,37 +23,43 @@ const News = () => {
     }, []);
 
     const handleToggleContent = (id) => {
-        setExpandedIds(prevIds => {
-            const newIds = new Set(prevIds);
-            if (newIds.has(id)) {
-                newIds.delete(id);
-            } else {
-                newIds.add(id);
-            }
-            return newIds;
-        });
+        if (expandedId === id) {
+            setExpandedId(null); // Collapse if clicking the same item
+        } else {
+            setExpandedId(id);
+        }
     };
 
     return (
         <div className="news-container">
-            {news.map(item => (
-                <div key={item.id} className="news-item">
+            <div className="news-titles">
+                {news.map(item => (
                     <div 
-                        className="news-title-container" 
+                        key={item.id}
+                        className={`news-title ${expandedId === item.id ? 'active' : ''}`}
                         onClick={() => handleToggleContent(item.id)}
                     >
-                        <h2 className="news-title">{item.title}</h2>
-                        <p className="news-date">
-                            {new Date(item.published_at).toLocaleDateString()}
-                        </p>
+                        {item.title}
                     </div>
-                    <div 
-                        className={`news-content ${expandedIds.has(item.id) ? 'expanded' : ''}`}
-                    >
-                        {item.content}
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            <div className="news-content-container">
+                {news.map(item => (
+                    expandedId === item.id && (
+                        <div key={item.id}>
+                            <div className="news-content-title">
+                                {item.title}
+                            </div>
+                            <div 
+                                className={`news-content ${expandedId === item.id ? 'expanded' : ''}`}
+                            >
+                                {item.content}
+                                
+                            </div>
+                        </div>
+                    )
+                ))}
+            </div>
         </div>
     );
 };

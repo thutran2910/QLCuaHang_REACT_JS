@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Cart.css';
+import { Link } from 'react-router-dom';
 
 const formatCurrency = (value) => {
   if (isNaN(value)) return value;
@@ -106,7 +107,7 @@ const Cart = () => {
             const discount = parseFloat(item.product.discount);
             const quantity = item.quantity;
             const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
-            const totalOriginalPrice = originalPrice * quantity;
+            const totalOriginalPrice = parseFloat(item.priceTong);
             const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice;
 
             return (
@@ -159,6 +160,9 @@ const Cart = () => {
       ) : (
         <p>Giỏ hàng của bạn trống.</p>
       )}
+      <Link to="/order">
+        <button className="btn-dh">Tiến hành đặt hàng</button>
+      </Link>
     </main>
   );
 };

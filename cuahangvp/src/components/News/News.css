@@ -1,49 +1,123 @@
+/* News.css */
+
+/* Padding cho toàn bộ khung hình */
 .news-container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
+    display: flex;
+    padding: 20px; /* Tạo khoảng cách xung quanh khung hình */
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng thể */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.news-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-    position: relative;
-}
-
-.news-title-container {
-    background-color: #b0077b2c; /* Nền xanh dương nhẹ */
-    color: white; /* Chữ trắng */
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+.news-titles {
+    width: 30%;
+    border-right: 1px solid #ddd;
+    padding: 20px; /* Padding cho container tiêu đề */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng thể */
+    height: 100vh; /* Chiếm toàn bộ chiều cao viewport để có thể cuộn */
+    overflow-y: auto;
 }
 
 .news-title {
-    margin: 0;
-    font-size: 1.2em; /* Thay đổi kích thước chữ tiêu đề */
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+    font-size: 18px; /* Đặt kích thước chữ tiêu đề */
+    background-color: #f1f1f1;
+    z-index: 1; /* Đảm bảo tiêu đề ở trên cùng */
 }
 
-.news-date {
-    font-size: 0.8em; /* Thay đổi kích thước chữ ngày tháng */
-    color: #f0f0f0; /* Màu chữ sáng hơn trên nền tối */
-    text-align: right;
-    margin: -10px 0 10px;
-    font-style: italic; /* Chữ in nghiêng */
+.news-title::before,
+.news-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #007bff;
+    transform: scaleX(0);
+    transition: transform 0.4s ease-out;
+    transform-origin: center;
+}
+
+.news-title::before {
+    top: 0;
+}
+
+.news-title::after {
+    bottom: 0;
+    transform-origin: center;
+}
+
+.news-title:hover::before,
+.news-title:hover::after,
+.news-title.active::before,
+.news-title.active::after {
+    transform: scaleX(1);
+}
+
+.news-title:hover,
+.news-title.active {
+    color: #007bff;
+    transform: translateX(5px);
+    background-color: #e0e0e0;
+}
+
+.news-content-container {
+    width: 70%;
+    padding: 20px; /* Padding cho container nội dung */
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng thể */
+    position: relative; /* Để định vị tiêu đề và thanh trượt */
+    overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+}
+
+.news-content-title {
+    font-size: 22px; /* Kích thước chữ tiêu đề nội dung */
+    font-weight: bold;
+    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề nội dung */
+    font-style: italic;
+    text-align: center;
+    font-family: 'Comic Sans MS', cursive;
 }
 
 .news-content {
-    background-color: #f0f0f0; /* Nền màu xám */
-    color: #333; /* Chữ đen nhẹ */
-    padding: 10px;
-    border-radius: 5px;
-    max-height: 0; /* Ẩn nội dung */
-    overflow: hidden;
-    opacity: 0; /* Ẩn nội dung */
-    transition: max-height 1s ease-out, opacity 0.5s ease; /* Hiệu ứng mờ dần và mở rộng */
-    white-space: pre-wrap; /* Giữ nguyên các xuống dòng và khoảng trắng */
+    background-color: #f9f9f9; /* Đặt nền trắng cho nội dung */
+    max-height: 300px; /* Chiều cao tối đa với thanh trượt */
+    overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung tràn */
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    padding: 0 10px; /* Padding cho nội dung */
+    white-space: pre-wrap; /* Duy trì định dạng văn bản */
+    opacity: 0; /* Ẩn nội dung khi không mở rộng */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng thể */
 }
 
 .news-content.expanded {
-    max-height: 1000px; /* Đặt chiều cao tối đa đủ lớn để chứa toàn bộ nội dung */
-    opacity: 1; /* Hiển thị nội dung */
+    max-height: 1000px; /* Đặt giá trị đủ lớn để nội dung có thể hiển thị hoàn toàn */
+    opacity: 1;
+}
+
+.show-more-btn {
+    position: absolute;
+    bottom: 20px; /* Đặt nút "Xem thêm" ở phía dưới */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.show-more-btn:hover {
+    background-color: #0056b3;
 }
