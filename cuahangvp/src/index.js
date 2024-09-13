@@ -1,6 +1,5 @@
-
 import React, { useReducer } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client'; // Import từ 'react-dom/client'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -17,10 +16,11 @@ const Main = () => {
         </React.StrictMode>
       </MyDispatchContext.Provider>
     </MyUserContext.Provider>
-  
   );
 };
 
-ReactDOM.render(<Main />, document.getElementById('root'));
+// Sử dụng createRoot thay cho ReactDOM.render
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Main />);
 
 reportWebVitals();

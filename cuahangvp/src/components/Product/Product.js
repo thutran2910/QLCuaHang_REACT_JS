@@ -12,6 +12,48 @@ const Product = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
   const user = useContext(MyUserContext);
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [message2, setMessage2] = useState('');
+
+  const handleWriteReviewClick = () => {
+    if (user) {
+      setIsWritingReview(true);
+    } else {
+      setMessage2('Bạn cần đăng nhập để thực hiện đánh giá.');
+    }
+  };
+
+  const handleSubmitReview = async () => {
+    if (rating === 0 || comment.trim() === '') {
+      setMessage2('Vui lòng nhập đủ thông tin.');
+      return;
+    }
+
+    try {
+      const response = await authApi().post(endpoints.reviews, {
+        product: id,
+        rating,
+        comment,
+        // username: user.username,
+        // first_name: user.first_name,
+        // last_name: user.last_name,
+      });
+
+      if (response.status === 201) {
+        setMessage2('Đánh giá của bạn đã được gửi thành công!');
+        setIsWritingReview(false);
+        setRating(0);
+        setComment('');
+      } else {
+        setMessage2('Không thể gửi đánh giá.');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      setMessage2('Có lỗi xảy ra khi gửi đánh giá.');
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -111,6 +153,9 @@ const Product = () => {
       {message && (
         <div className="alert alert-info">{message}</div>
       )}
+      {message2 && (
+        <div className="alert alert-info">{message2}</div>
+      )}
       <div className="product-page-main">
         <div className="product-page-image-container">
           <img src={product.image_url} alt={product.name} className="product-page-image" />
@@ -147,10 +192,10 @@ const Product = () => {
         )}
       </div>
       
-      {/* Hiển thị đánh giá của sản phẩm */}
+      {/* HIỂN THỊ ĐÁNH GIÁ SẢN PHẨM */}
       <div className="product-reviews-section">
         <h2>Những đánh giá của khách hàng về sản phẩm</h2>
-        <h5 className="write-review-button">Viết đánh giá </h5>
+        <h5 className="write-review-button" onClick={handleWriteReviewClick}>Viết đánh giá </h5>
       </div>
       <div className="product-reviews">
         {reviews.length > 0 ? (
@@ -169,7 +214,28 @@ const Product = () => {
           <p>Chưa có đánh giá nào.</p>
         )}
       </div>
+
+      {/* HIỆN BẢNG ĐÁNH GIÁ */}
+      {isWritingReview && user && (
+        <div className="write-review-form">
+          <h3>Đánh giá sản phẩm</h3>
+          <label>
+            Số sao:
+            <select value={rating} onChange={(e) => setRating(parseInt(e.target.value))}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <option key={star} value={star}>{star}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Nhận xét:
+            <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
+          </label>
+          <button onClick={handleSubmitReview}>Gửi đánh giá</button>
+        </div>
+      )}
     </div>
+    
   );  
 };
 
