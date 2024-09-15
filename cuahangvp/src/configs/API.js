@@ -17,6 +17,7 @@ export const endpoints = {
   currentUser: '/user/current-user/',
   electronicNews: '/electronicnews/',
   reviews: '/review/',
+  createOrder: '/order/', 
 };
 
 export const setAuthToken = (token) => {

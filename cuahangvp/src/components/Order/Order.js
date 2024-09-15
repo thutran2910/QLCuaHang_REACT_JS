@@ -3,13 +3,13 @@ import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Order.css';
 
-const formatCurrency = (value) => {
+const formatCurrency = (value, fractionDigits = 3) => {
   if (isNaN(value)) return value;
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits
   }).format(value);
 };
 
@@ -19,6 +19,8 @@ const Order = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [totalAmount, setTotalAmount] = useState(0);
   const [error, setError] = useState(null);
+  const [name, setName] = useState(''); // For users not logged in
+  const [email, setEmail] = useState(''); // For users not logged in
   const user = useContext(MyUserContext);
 
   useEffect(() => {
@@ -59,11 +61,10 @@ const Order = () => {
 
   useEffect(() => {
     const total = cartItems.reduce((sum, item) => {
-      const discount = parseFloat(item.product.discount);
       const originalPrice = parseFloat(item.product.price);
-      const quantity = item.quantity;
+      const discount = parseFloat(item.product.discount);
       const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
-      return sum + (discount > 0 ? discountedPrice * quantity : parseFloat(item.priceTong));
+      return sum + (item.quantity * discountedPrice);
     }, 0);
 
     setTotalAmount(total);
@@ -72,16 +73,26 @@ const Order = () => {
   const handleCheckout = async () => {
     try {
       const api = user ? authApi() : apiClient;
-      const response = await api.post(endpoints.createOrder, {
+      const roundedTotalAmount = parseFloat(totalAmount.toFixed(2));
+
+      const orderData = {
         shipping_address: shippingAddress,
         payment_method: paymentMethod,
-        total_amount: totalAmount,
+        total_amount: roundedTotalAmount,
+        status: 'Pending',
         order_items: cartItems.map(item => ({
-          product_id: item.product.id,
+          product: item.product.id, // Use product ID instead of cart item ID
           quantity: item.quantity,
-          price: item.priceTong
+          priceTong: item.priceTong
         }))
-      });
+      };
+
+      if (!user) {
+        orderData.name = name;
+        orderData.email = email;
+      }
+
+      const response = await api.post(endpoints.createOrder, orderData);
 
       if (response.status === 201) {
         alert('Đơn hàng đã được tạo thành công!');
@@ -89,11 +100,16 @@ const Order = () => {
         setShippingAddress('');
         setPaymentMethod('cash');
         setTotalAmount(0);
+        if (!user) {
+          setName('');
+          setEmail('');
+        }
       } else {
         setError('Không thể tạo đơn hàng.');
       }
     } catch (error) {
       setError('Có lỗi xảy ra khi tạo đơn hàng.');
+      console.error('Error during checkout:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -101,6 +117,28 @@ const Order = () => {
     <main className='order-content'>
       <div className='order-info'>
         <h2>Thông tin thanh toán</h2>
+        {!user && (
+          <>
+            <label>
+              Tên:
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
+          </>
+        )}
         <label>
           Địa chỉ giao hàng:
           <textarea
@@ -145,13 +183,10 @@ const Order = () => {
             {cartItems.map(item => {
               const originalPrice = parseFloat(item.product.price);
               const discount = parseFloat(item.product.discount);
-              const quantity = item.quantity;
               const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
-              const totalOriginalPrice = parseFloat(item.priceTong);
-              const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice;
 
               return (
-                <div className='order-item' key={item.id}>
+                <div className='order-item' key={item.product.id}>
                   <img src={item.product.image_url} alt={item.product.name} className='order-item-image' />
                   <div className='order-item-details'>
                     <h4 className='order-item-name'>{item.product.name}</h4>
@@ -165,34 +200,29 @@ const Order = () => {
                         <p className='no-discount-price'>{formatCurrency(originalPrice)}</p>
                       )}
                     </div>
-                    {discount > 0 && (
-                      <div className='order-item-discount'>-{Math.round(discount * 100)}%</div>
-                    )}
-                    <div className='order-item-quantity'>
-                      <span>Số lượng: {quantity}</span>
-                    </div>
-                    <div className='price-tong'>
-                      Tổng giá:  
+                    <p className='order-item-quantity'>Số lượng: {item.quantity}</p>
+                    <p className='price-tong'>
+                      Tổng giá: 
                       {discount > 0 ? (
                         <>
                           <span className='original-price'>
-                            {formatCurrency(totalOriginalPrice)}
+                            {formatCurrency(item.priceTong)}
                           </span>
                           <span className='discounted-price'>
-                            {formatCurrency(totalDiscountedPrice)}
+                            {formatCurrency(item.quantity * discountedPrice)}
                           </span>
                         </>
                       ) : (
-                        <span>{formatCurrency(totalOriginalPrice)}</span>
+                        <span>{formatCurrency(item.priceTong)}</span>
                       )}
-                    </div>
+                    </p>
                   </div>
                 </div>
               );
             })}
           </div>
         ) : (
-          <p>Giỏ hàng của bạn trống.</p>
+          <p>Giỏ hàng của bạn đang trống.</p>
         )}
       </div>
     </main>
