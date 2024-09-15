@@ -1,195 +1,193 @@
 /* Toàn bộ vùng chứa chính */
 .order-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Phần thông tin thanh toán */
-  .order-info {
-    flex: 60%;
-    padding-right: 20px;
-    border-right: 1px solid #ccc;
-  }
-  
-  .order-info h2 {
-    margin-top: 0;
-    font-size: 1.5em;
-  }
-  
-  .order-info label {
-    display: block;
-    margin-bottom: 15px;
-  }
-  
-  .order-info textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 1em;
-    resize: none;
-  }
-  
-  .order-info select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 1em;
-  }
-  
-  .order-info .order-total {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  
-  .order-info .btn-checkout {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 20px;
-  }
-  
-  .order-info .btn-checkout:hover {
-    background-color: #2980b9;
-  }
-  
-  /* Phần chi tiết giỏ hàng */
-  .order-details {
-    flex: 40%;
-    padding-left: 20px;
-  }
-  
-  .order-details h2 {
-    margin-top: 0;
-    font-size: 1.5em;
-  }
-  
-  .order-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  
-  .order-item {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 20px;
-    background-color: #f9f9f9;
-    position: relative;
-  }
-  
-  .order-item-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .order-item-details {
-    flex: 1;
-  }
-  
-  .order-item-name {
-    font-size: 1.2em;
-    margin: 0;
-    font-weight: bold;
-  }
-  
-  .order-item-price {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-  }
-  
-  .original-price {
-    color: #888;
-    text-decoration: line-through;
-    font-size: 0.9em; /* Kích thước chữ nhỏ hơn cho giá cũ */
-    margin-right: 10px;
-  }
-  
-  .discounted-price {
-    color: #e74c3c; /* Màu đỏ cho giá đã giảm */
-    font-weight: bold;
-    font-size: 1.1em; /* Kích thước chữ lớn hơn cho giá đã giảm */
-  }
-  
-  .no-discount-price {
-    font-size: 1.1em;
-  }
-  
-  .order-item-discount {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-  }
-  
-  .order-item-quantity {
-    margin: 10px 0;
-    font-style: italic;
-  }
-  
-  .price-tong {
-    font-size: 1.1em;
-  }
-  
-  .price-tong .original-price {
-    color: #888;
-    text-decoration: line-through;
-    font-size: 0.9em; /* Kích thước chữ nhỏ hơn cho giá cũ tổng */
-  }
-  
-  .price-tong .discounted-price {
-    color: #e74c3c; /* Màu đỏ cho tổng giá đã giảm */
-    font-weight: bold;
-  }
-  
-  .order-info textarea, 
-  .order-info select {
-    font-size: 1em;
-  }
-  
-  .order-info label {
-    font-size: 1em;
-  }
-  
-  .order-info .order-total {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  
-  .order-info .btn-checkout {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  
-  .order-info .btn-checkout:hover {
-    background-color: #2980b9;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Phần thông tin thanh toán */
+.order-info {
+  flex: 0 0 60%; /* Chiếm 60% chiều rộng */
+  padding-right: 20px;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.order-info h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.order-info label {
+  display: block;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.order-info textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  resize: none;
+}
+
+.order-info select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.order-info .order-total {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.order-info .btn-checkout {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 20px;
+  display: block;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.order-info .btn-checkout:hover {
+  background-color: #2980b9;
+}
+
+.order-info .error-text {
+  color: #d9534f; /* Màu đỏ cho thông báo lỗi */
+  font-size: 12px;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Phần chi tiết giỏ hàng */
+.order-details {
+  flex: 0 0 40%; /* Chiếm 40% chiều rộng */
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.order-details h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.order-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-item {
+  display: flex;
+  align-items: flex-start; /* Căn chỉnh các phần tử bên trái */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px; /* Giảm padding để làm cho item hẹp hơn */
+  margin-bottom: 10px; /* Giảm khoảng cách giữa các item */
+  background-color: #f9f9f9;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%; /* Đảm bảo item chiếm toàn bộ chiều rộng của order-details */
+  min-height: 120px; /* Giới hạn chiều cao tối thiểu */
+}
+
+.order-item-image {
+  width: 100px; /* Điều chỉnh kích thước hình ảnh */
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.order-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item-name {
+  font-size: 1.1em; /* Giảm kích thước chữ tên sản phẩm */
+  margin: 0;
+  font-weight: bold;
+}
+
+.order-item-price {
+  display: flex;
+  align-items: center;
+  margin: 5px 0; /* Giảm khoảng cách giữa giá */
+}
+
+.order-item-price .price-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Giảm khoảng cách giữa giá cũ và giá mới */
+}
+
+.original-price, .discounted-price {
+  font-size: 1em; /* Giảm kích thước chữ cho giá cũ và giá mới */
+}
+
+.original-price {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.discounted-price {
+  color: #e74c3c; /* Màu đỏ cho giá đã giảm */
+  font-weight: bold;
+}
+
+.no-discount-price {
+  font-size: 1em;
+}
+
+.order-item-discount {
+  position: absolute;
+  top: 5px; /* Đưa discount lên gần hơn */
+  right: 5px;
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 3px 6px; /* Giảm padding của discount badge */
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9em; /* Giảm kích thước chữ của discount badge */
+}
+
+.order-item-quantity {
+  margin: 5px 0; /* Đưa số lượng lên gần hơn với giá */
+  font-style: italic;
+  font-size: 0.9em; /* Giảm kích thước chữ để giảm chiều cao */
+}
+
+.price-tong {
+  font-size: 1em; /* Giảm kích thước chữ tổng giá */
+}
+
+.price-tong .original-price {
+  color: #888;
+  text-decoration: line-through;
+  font-size: 0.9em; /* Kích thước chữ nhỏ hơn cho giá cũ tổng */
+}
+
+.price-tong .discounted-price {
+  color: #e74c3c; /* Màu đỏ cho tổng giá đã giảm */
+  font-weight: bold;
+}

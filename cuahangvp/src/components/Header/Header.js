@@ -108,6 +108,10 @@ const Header = ({ onCategorySelect, onSearch }) => {
           <Nav.Link as={Link} to="/cart" className="ms-3">  {/* Sử dụng Link để điều hướng */}
             <i className="bi bi-cart"></i> Giỏ hàng
           </Nav.Link>
+
+          <Nav.Link as={Link} to="/orderlist" className="ms-3">  {/* Sử dụng Link để điều hướng */}
+            <i className="bi bi-cart"></i> Đơn hàng
+          </Nav.Link>
           
           <Dropdown className="ms-3">
             <Dropdown.Toggle variant="success" id="dropdown-basic">

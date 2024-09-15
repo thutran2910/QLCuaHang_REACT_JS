@@ -19,8 +19,15 @@ const Order = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [totalAmount, setTotalAmount] = useState(0);
   const [error, setError] = useState(null);
-  const [name, setName] = useState(''); // For users not logged in
-  const [email, setEmail] = useState(''); // For users not logged in
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [note, setNote] = useState('');
+  const [errors, setErrors] = useState({
+    shippingAddress: false,
+    paymentMethod: false,
+    name: false,
+    email: false
+  });
   const user = useContext(MyUserContext);
 
   useEffect(() => {
@@ -34,11 +41,14 @@ const Order = () => {
           const response = await api.get(endpoints.currentUserCart);
           if (response.data && response.data.cart_items) {
             setCartItems(response.data.cart_items);
+            if (response.data.email) {
+              setEmail(response.data.email);
+            }
           } else {
             setError('Dữ liệu không đúng định dạng.');
           }
         } catch (error) {
-          console.error('Error fetching current user cart:', error);
+          console.error('Lỗi khi lấy giỏ hàng của người dùng:', error);
           setError('Có lỗi xảy ra khi tải giỏ hàng của người dùng.');
         }
       } else {
@@ -50,7 +60,7 @@ const Order = () => {
             setError('Dữ liệu không đúng định dạng.');
           }
         } catch (error) {
-          console.error('Error fetching cart items:', error);
+          console.error('Lỗi khi lấy giỏ hàng:', error);
           setError('Có lỗi xảy ra khi tải giỏ hàng.');
         }
       }
@@ -70,18 +80,68 @@ const Order = () => {
     setTotalAmount(total);
   }, [cartItems]);
 
+  useEffect(() => {
+    if (user && user.username) {
+      setName(user.username);
+    }
+  }, [user]);
+
+  const handleInputChange = (field) => (e) => {
+    const value = e.target.value;
+    switch (field) {
+      case 'name':
+        setName(value);
+        setErrors((prev) => ({ ...prev, name: !value }));
+        break;
+      case 'email':
+        setEmail(value);
+        setErrors((prev) => ({ ...prev, email: !value }));
+        break;
+      case 'shippingAddress':
+        setShippingAddress(value);
+        setErrors((prev) => ({ ...prev, shippingAddress: !value }));
+        break;
+      case 'paymentMethod':
+        setPaymentMethod(value);
+        setErrors((prev) => ({ ...prev, paymentMethod: !value }));
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleCheckout = async () => {
+    const newErrors = {
+      shippingAddress: !shippingAddress,
+      paymentMethod: !paymentMethod,
+      name: !name && !user,
+      email: !email && !user
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some(error => error)) {
+      setError('Vui lòng nhập đầy đủ thông tin.');
+      return;
+    }
+
+    const paymentMethodMap = {
+      'cash': 'Tiền mặt',
+      'bank_transfer': 'Chuyển khoản ngân hàng',
+      'online': 'Thanh toán trực tuyến'
+    };
+
     try {
       const api = user ? authApi() : apiClient;
       const roundedTotalAmount = parseFloat(totalAmount.toFixed(2));
 
       const orderData = {
         shipping_address: shippingAddress,
-        payment_method: paymentMethod,
+        payment_method: paymentMethodMap[paymentMethod],  // Chuyển đổi giá trị phương thức thanh toán
         total_amount: roundedTotalAmount,
-        status: 'Pending',
+        status: 'Đang chờ',
         order_items: cartItems.map(item => ({
-          product: item.product.id, // Use product ID instead of cart item ID
+          product: item.product.id,
           quantity: item.quantity,
           priceTong: item.priceTong
         }))
@@ -92,24 +152,35 @@ const Order = () => {
         orderData.email = email;
       }
 
+      if (note) {
+        orderData.note = note;
+      }
+
       const response = await api.post(endpoints.createOrder, orderData);
 
       if (response.status === 201) {
         alert('Đơn hàng đã được tạo thành công!');
         setCartItems([]);
         setShippingAddress('');
-        setPaymentMethod('cash');
+        setPaymentMethod('cash');  // Cập nhật phương thức thanh toán mặc định
         setTotalAmount(0);
+        setNote('');
         if (!user) {
           setName('');
           setEmail('');
         }
+        setErrors({
+          shippingAddress: false,
+          paymentMethod: false,
+          name: false,
+          email: false
+        });
       } else {
         setError('Không thể tạo đơn hàng.');
       }
     } catch (error) {
       setError('Có lỗi xảy ra khi tạo đơn hàng.');
-      console.error('Error during checkout:', error.response ? error.response.data : error.message);
+      console.error('Lỗi khi thanh toán:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -117,54 +188,59 @@ const Order = () => {
     <main className='order-content'>
       <div className='order-info'>
         <h2>Thông tin thanh toán</h2>
+        {error && <p className='error-message'>{error}</p>}
         {!user && (
           <>
-            <label>
-              Tên:
+            <label className={errors.name ? 'error' : ''}>
+              <span>Tên:</span>
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleInputChange('name')}
                 required
               />
+              {errors.name && <span className='error-text'>*Vui lòng nhập tên</span>}
             </label>
-            <label>
-              Email:
+            <label className={errors.email ? 'error' : ''}>
+              <span>Email:</span>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleInputChange('email')}
                 required
               />
+              {errors.email && <span className='error-text'>*Vui lòng nhập email</span>}
             </label>
           </>
         )}
-        <label>
-          Địa chỉ giao hàng:
+        <label className={errors.shippingAddress ? 'error' : ''}>
+          <span>Địa chỉ giao hàng:</span>
           <textarea
             value={shippingAddress}
-            onChange={(e) => setShippingAddress(e.target.value)}
+            onChange={handleInputChange('shippingAddress')}
             required
           />
+          {errors.shippingAddress && <span className='error-text'>*Vui lòng nhập địa chỉ giao hàng</span>}
         </label>
-        <label>
-          Phương thức thanh toán:
+        <label className={errors.paymentMethod ? 'error' : ''}>
+          <span>Phương thức thanh toán:</span>
           <select
             value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
+            onChange={handleInputChange('paymentMethod')}
             required
           >
             <option value="cash">Tiền mặt</option>
             <option value="bank_transfer">Chuyển khoản ngân hàng</option>
             <option value="online">Thanh toán trực tuyến</option>
           </select>
+          {errors.paymentMethod && <span className='error-text'>*Vui lòng chọn phương thức thanh toán</span>}
         </label>
         <label>
-          Ghi chú:
+          <span>Ghi chú:</span>
           <textarea
             placeholder="Nhập ghi chú nếu có..."
-            value={shippingAddress} // Reusing shipping address state for notes; adjust if needed
-            onChange={(e) => setShippingAddress(e.target.value)}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
           />
         </label>
         <div className='order-total'>
@@ -174,17 +250,16 @@ const Order = () => {
           Xác nhận đặt hàng
         </button>
       </div>
-
+  
       <div className='order-details'>
-        <h2>Chi tiết hóa đơn</h2>
-        {error && <p>{error}</p>}
+        <h2>Chi tiết đơn hàng</h2>
         {cartItems.length > 0 ? (
           <div className='order-list'>
             {cartItems.map(item => {
               const originalPrice = parseFloat(item.product.price);
               const discount = parseFloat(item.product.discount);
               const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
-
+  
               return (
                 <div className='order-item' key={item.product.id}>
                   <img src={item.product.image_url} alt={item.product.name} className='order-item-image' />
@@ -192,10 +267,10 @@ const Order = () => {
                     <h4 className='order-item-name'>{item.product.name}</h4>
                     <div className='order-item-price'>
                       {discount > 0 ? (
-                        <>
+                        <div className='price-container'>
                           <p className='original-price'>{formatCurrency(originalPrice)}</p>
                           <p className='discounted-price'>{formatCurrency(discountedPrice)}</p>
-                        </>
+                        </div>
                       ) : (
                         <p className='no-discount-price'>{formatCurrency(originalPrice)}</p>
                       )}
@@ -205,12 +280,8 @@ const Order = () => {
                       Tổng giá: 
                       {discount > 0 ? (
                         <>
-                          <span className='original-price'>
-                            {formatCurrency(item.priceTong)}
-                          </span>
-                          <span className='discounted-price'>
-                            {formatCurrency(item.quantity * discountedPrice)}
-                          </span>
+                          <span className='original-price'>{formatCurrency(item.priceTong)}</span>
+                          <span className='discounted-price'>{formatCurrency(item.quantity * discountedPrice)}</span>
                         </>
                       ) : (
                         <span>{formatCurrency(item.priceTong)}</span>
@@ -226,7 +297,7 @@ const Order = () => {
         )}
       </div>
     </main>
-  );
+  );  
 };
 
 export default Order;

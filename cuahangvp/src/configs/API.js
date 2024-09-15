@@ -18,6 +18,7 @@ export const endpoints = {
   electronicNews: '/electronicnews/',
   reviews: '/review/',
   createOrder: '/order/', 
+  orderList: () => '/orderlist/',  // Endpoint mới để lấy danh sách hóa đơn của người dùng
 };
 
 export const setAuthToken = (token) => {
