@@ -1,26 +1,55 @@
-/* Container for the order list */
+/* Container cho danh sách đơn hàng */
 .order-list-container {
   padding: 20px;
   max-width: 1200px;
   margin: auto;
 }
 
-/* Heading for the order list */
-.order-list-container h1 {
-  font-size: 2.5rem;
+/* Tiêu đề cho danh sách đơn hàng */
+.order-list-container h3 {
+  font-size: 2rem;
   margin-bottom: 20px;
   color: #333;
   text-align: center;
 }
 
-/* Container for individual order cards */
+/* Container cho các nút trạng thái */
+.status-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.status-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.status-buttons button:hover {
+  background-color: #ddd;
+}
+
+/* Nút trạng thái đang được chọn */
+.status-buttons button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Container cho các thẻ đơn hàng */
 .order-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
-/* Individual order card */
+/* Thẻ đơn hàng cá nhân */
 .order-card {
   background-color: #ffffff;
   border-radius: 8px;
@@ -31,16 +60,16 @@
   margin: 0 auto;
 }
 
-/* Header section inside each order card */
+/* Phần tiêu đề trong mỗi thẻ đơn hàng */
 .order-header {
   border-bottom: 2px solid #eee;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
-/* Order ID and other details */
-.order-header h2 {
-  font-size: 1.8rem;
+/* ID đơn hàng và các thông tin khác */
+.order-header h4 {
+  font-size: 1.2rem;
   margin: 0;
   color: #007bff;
 }
@@ -51,19 +80,25 @@
   color: #555;
 }
 
-/* Section for order details */
+/* Tổng thanh toán cụ thể */
+.order-header p.total-amount {
+  font-weight: bold;
+  color: red;
+}
+
+/* Phần chi tiết đơn hàng */
 .order-details {
   margin-top: 20px;
 }
 
-/* Title for order items */
-.order-details h3 {
+/* Tiêu đề cho các mặt hàng trong đơn hàng */
+.order-details h5 {
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: #333;
 }
 
-/* Container for individual order items */
+/* Container cho từng mặt hàng trong đơn hàng */
 .order-items {
   list-style: none;
   padding: 0;
@@ -80,7 +115,7 @@
   border-bottom: none;
 }
 
-/* Product image */
+/* Hình ảnh sản phẩm */
 .order-item-image {
   width: 100px;
   height: auto;
@@ -88,12 +123,12 @@
   margin-right: 15px;
 }
 
-/* Container for product info */
+/* Container cho thông tin sản phẩm */
 .order-item-info {
   flex: 1;
 }
 
-/* Product name and description */
+/* Tên sản phẩm và mô tả */
 .product-name {
   font-weight: bold;
   color: #333;
@@ -104,7 +139,7 @@
   margin-bottom: 5px;
 }
 
-/* Price and total */
+/* Giá và tổng giá */
 .product-price, .item-total {
   font-size: 1rem;
   color: #333;
@@ -112,10 +147,10 @@
 
 .item-total {
   font-weight: bold;
-  color: #007bff;
+  color: #646669;
 }
 
-/* Add some margin at the bottom of the order card */
+/* Thêm khoảng cách dưới thẻ đơn hàng */
 .order-card {
   margin-bottom: 20px;
 }

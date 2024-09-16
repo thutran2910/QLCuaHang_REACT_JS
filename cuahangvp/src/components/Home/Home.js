@@ -34,10 +34,11 @@ const Home = ({ category, searchTerm }) => {
 
         const productsWithCorrectPrice = response.data.map(product => {
           const price = parseFloat(product.price);
-          console.log('Giá sau khi chuyển đổi:', price);
+          const discountedPrice = parseFloat(product.discounted_price);
           return {
             ...product,
-            price
+            price,
+            discountedPrice
           };
         });
 
@@ -113,8 +114,7 @@ const Home = ({ category, searchTerm }) => {
           <div className='product-list'>
             {products.map(product => {
               const originalPrice = product.price;
-              const discountedPrice = product.discount > 0 ? originalPrice * (1 - product.discount) : null;
-              const discountPercentage = product.discount > 0 ? Math.round(product.discount * 100) : 0;
+              const discountedPrice = product.discountedPrice;
 
               return (
                 <div className='product-item' key={product.id}>
@@ -122,18 +122,14 @@ const Home = ({ category, searchTerm }) => {
                     <Link to={`/product/${product.id}`}>
                       <img src={product.image_url} alt={product.name} className='product-image' />
                     </Link>
-                    {discountedPrice !== null && (
-                      <div className='discount-tag'>-{discountPercentage}%</div>
+                    {product.discount > 0 && (
+                      <div className='discount-tag'>-{Math.round(product.discount * 100)}%</div>
                     )}
                   </div>
                   <div className='product-details'>
                     <h3 className='product-name'>{product.name}</h3>
                     <div className='product-prices'>
-                      {discountedPrice === null ? (
-                        <p className='product-price normal-price'>
-                          {formatCurrency(originalPrice)}
-                        </p>
-                      ) : (
+                      {product.discount > 0 ? (
                         <>
                           <p className='product-price original-price'>
                             {formatCurrency(originalPrice)}
@@ -142,6 +138,10 @@ const Home = ({ category, searchTerm }) => {
                             {formatCurrency(discountedPrice)}
                           </p>
                         </>
+                      ) : (
+                        <p className='product-price discounted-price'>
+                          {formatCurrency(originalPrice)}
+                        </p>
                       )}
                     </div>
                     <div className='button-group'>

@@ -147,7 +147,6 @@
 
 .original-price {
   color: #888;
-  text-decoration: line-through;
 }
 
 .discounted-price {
@@ -182,9 +181,9 @@
 }
 
 .price-tong .original-price {
-  color: #888;
-  text-decoration: line-through;
-  font-size: 0.9em; /* Kích thước chữ nhỏ hơn cho giá cũ tổng */
+  color: #4b4949;
+  font-size: 1.1em; /* Kích thước chữ nhỏ hơn cho giá cũ tổng */
+  text-decoration: none;
 }
 
 .price-tong .discounted-price {

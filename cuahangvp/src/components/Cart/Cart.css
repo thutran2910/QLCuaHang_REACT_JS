@@ -63,7 +63,6 @@
 
 /* Giá gốc với giảm giá */
 .cart-item-price.has-discount .original-price {
-  text-decoration: line-through;
   color: #888;
   margin-right: 10px;
 }
@@ -71,7 +70,7 @@
 /* Giá đã giảm */
 .cart-item-price.has-discount .discounted-price {
   color: #f00;
-  font-weight: bold;
+  font-weight: lighter;
 }
 
 /* Giá không giảm */
@@ -135,9 +134,10 @@
 
 /* Tổng giá của sản phẩm có giảm giá */
 .price-tong.has-discount .original-price {
-  text-decoration: line-through;
-  color: #888;
+  text-decoration: none;
+  color: #333;
   margin-right: 10px;
+  font-size: 17px;
 }
 
 /* Tổng giá đã giảm */
@@ -150,6 +150,7 @@
 .price-tong.no-discount .original-price {
   color: #333;
   text-decoration: none;
+  font-size: 17px !important;
 }
 
 /* Nút xóa khỏi giỏ hàng */

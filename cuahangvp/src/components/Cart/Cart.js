@@ -105,10 +105,8 @@ const Cart = () => {
           {cartItems.map(item => {
             const originalPrice = parseFloat(item.product.price);
             const discount = parseFloat(item.product.discount);
-            const quantity = item.quantity;
-            const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
-            const totalOriginalPrice = parseFloat(item.priceTong);
-            const totalDiscountedPrice = discount > 0 ? discountedPrice * quantity : totalOriginalPrice;
+            const discountedPrice = parseFloat(item.product.discounted_price);
+            const totalPrice = parseFloat(item.priceTong);
 
             return (
               <div className='cart-item' key={item.id}>
@@ -141,13 +139,8 @@ const Cart = () => {
                   <div className={`price-tong ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
                     <span>Tổng giá: </span>
                     <span className={discount > 0 ? 'original-price' : ''}>
-                      {formatCurrency(totalOriginalPrice)}
+                      {formatCurrency(totalPrice)}
                     </span>
-                    {discount > 0 && (
-                      <span className='discounted-price'>
-                        {formatCurrency(totalDiscountedPrice)}
-                      </span>
-                    )}
                   </div>
                   <button className='remove-item-button' onClick={() => handleRemoveItem(item.id)}>
                     Xóa khỏi giỏ

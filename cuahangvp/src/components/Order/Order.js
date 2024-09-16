@@ -8,8 +8,8 @@ const formatCurrency = (value, fractionDigits = 3) => {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3
   }).format(value);
 };
 
@@ -28,6 +28,7 @@ const Order = () => {
     name: false,
     email: false
   });
+  const [bankTransferImage, setBankTransferImage] = useState(null);
   const user = useContext(MyUserContext);
 
   useEffect(() => {
@@ -71,9 +72,7 @@ const Order = () => {
 
   useEffect(() => {
     const total = cartItems.reduce((sum, item) => {
-      const originalPrice = parseFloat(item.product.price);
-      const discount = parseFloat(item.product.discount);
-      const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
+      const discountedPrice = parseFloat(item.product.discounted_price);
       return sum + (item.quantity * discountedPrice);
     }, 0);
 
@@ -110,6 +109,10 @@ const Order = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    setBankTransferImage(e.target.files[0]);
+  };
+
   const handleCheckout = async () => {
     const newErrors = {
       shippingAddress: !shippingAddress,
@@ -126,7 +129,7 @@ const Order = () => {
     }
 
     const paymentMethodMap = {
-      'cash': 'Tiền mặt',
+      'cash': 'Thanh toán khi nhận hàng',
       'bank_transfer': 'Chuyển khoản ngân hàng',
       'online': 'Thanh toán trực tuyến'
     };
@@ -135,34 +138,36 @@ const Order = () => {
       const api = user ? authApi() : apiClient;
       const roundedTotalAmount = parseFloat(totalAmount.toFixed(2));
 
-      const orderData = {
-        shipping_address: shippingAddress,
-        payment_method: paymentMethodMap[paymentMethod],  // Chuyển đổi giá trị phương thức thanh toán
-        total_amount: roundedTotalAmount,
-        status: 'Đang chờ',
-        order_items: cartItems.map(item => ({
-          product: item.product.id,
-          quantity: item.quantity,
-          priceTong: item.priceTong
-        }))
-      };
-
+      const formData = new FormData();
+      formData.append('shipping_address', shippingAddress);
+      formData.append('payment_method', paymentMethodMap[paymentMethod]);
+      formData.append('total_amount', roundedTotalAmount);
+      formData.append('status', 'Đang chờ');
+      formData.append('order_items', JSON.stringify(cartItems.map(item => ({
+        product: item.product.id,
+        quantity: item.quantity,
+        priceTong: item.priceTong
+      }))));
       if (!user) {
-        orderData.name = name;
-        orderData.email = email;
+        formData.append('name', name);
+        formData.append('email', email);
       }
-
       if (note) {
-        orderData.note = note;
+        formData.append('note', note);
+      }
+      if (paymentMethod === 'bank_transfer' && bankTransferImage) {
+        formData.append('bank_transfer_image', bankTransferImage);
       }
 
-      const response = await api.post(endpoints.createOrder, orderData);
+      const response = await api.post(endpoints.createOrder, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
 
       if (response.status === 201) {
         alert('Đơn hàng đã được tạo thành công!');
         setCartItems([]);
         setShippingAddress('');
-        setPaymentMethod('cash');  // Cập nhật phương thức thanh toán mặc định
+        setPaymentMethod('cash');
         setTotalAmount(0);
         setNote('');
         if (!user) {
@@ -229,12 +234,30 @@ const Order = () => {
             onChange={handleInputChange('paymentMethod')}
             required
           >
-            <option value="cash">Tiền mặt</option>
+            <option value="cash">Thanh toán khi nhận hàng</option>
             <option value="bank_transfer">Chuyển khoản ngân hàng</option>
             <option value="online">Thanh toán trực tuyến</option>
           </select>
           {errors.paymentMethod && <span className='error-text'>*Vui lòng chọn phương thức thanh toán</span>}
         </label>
+        {paymentMethod === 'bank_transfer' && (
+          <div>
+            <p>Thông tin chuyển khoản:</p>
+            <ul>
+              <li>Số tài khoản: 0913747367</li>
+              <li>Ngân hàng: Agribank, Chi nhánh Trung tâm Sài Gòn</li>
+              <li>Chủ tài khoản: Hồ Minh Anh</li>
+            </ul>
+            <label>
+              <span>Hình ảnh chuyển khoản:</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
+        )}
         <label>
           <span>Ghi chú:</span>
           <textarea
@@ -258,7 +281,7 @@ const Order = () => {
             {cartItems.map(item => {
               const originalPrice = parseFloat(item.product.price);
               const discount = parseFloat(item.product.discount);
-              const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
+              const discountedPrice = parseFloat(item.product.discounted_price);
   
               return (
                 <div className='order-item' key={item.product.id}>
@@ -278,14 +301,7 @@ const Order = () => {
                     <p className='order-item-quantity'>Số lượng: {item.quantity}</p>
                     <p className='price-tong'>
                       Tổng giá: 
-                      {discount > 0 ? (
-                        <>
                           <span className='original-price'>{formatCurrency(item.priceTong)}</span>
-                          <span className='discounted-price'>{formatCurrency(item.quantity * discountedPrice)}</span>
-                        </>
-                      ) : (
-                        <span>{formatCurrency(item.priceTong)}</span>
-                      )}
                     </p>
                   </div>
                 </div>

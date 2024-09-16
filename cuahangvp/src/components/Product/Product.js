@@ -7,15 +7,15 @@ import './Product.css';
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [reviews, setReviews] = useState([]); // Thêm state cho reviews
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
+  const [message2, setMessage2] = useState('');
   const user = useContext(MyUserContext);
   const [isWritingReview, setIsWritingReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [message2, setMessage2] = useState('');
 
   const handleWriteReviewClick = () => {
     if (user) {
@@ -36,9 +36,6 @@ const Product = () => {
         product: id,
         rating,
         comment,
-        // username: user.username,
-        // first_name: user.first_name,
-        // last_name: user.last_name,
       });
 
       if (response.status === 201) {
@@ -77,7 +74,7 @@ const Product = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await apiClient.get(`${endpoints.reviews}?product_id=${id}`); // Gọi API lấy reviews
+        const response = await apiClient.get(`${endpoints.reviews}?product_id=${id}`);
         setReviews(response.data);
       } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -91,7 +88,7 @@ const Product = () => {
     if (message) {
       const timer = setTimeout(() => {
         setMessage('');
-      }, 2000); // Hiển thị thông báo trong 2 giây
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -102,8 +99,8 @@ const Product = () => {
   if (!product) return <p>Không có sản phẩm nào để hiển thị.</p>;
 
   const originalPrice = parseFloat(product.price);
-  const discountedPrice = product.discount > 0 ? originalPrice * (1 - parseFloat(product.discount)) : null;
-  const discountPercentage = product.discount > 0 ? Math.round(parseFloat(product.discount) * 100) : 0;
+  const discountedPrice = parseFloat(product.discounted_price);
+  const discountPercentage = parseFloat(product.discount);
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -116,8 +113,8 @@ const Product = () => {
 
   const handleAddToCart = async (productId, quantity = 1) => {
     try {
-      const api = user ? authApi() : apiClient; // Sử dụng authApi nếu đã đăng nhập
-      const cartId = user ? undefined : 11; // Sử dụng cartId cố định nếu không đăng nhập
+      const api = user ? authApi() : apiClient;
+      const cartId = user ? undefined : 11;
 
       const response = await api.post(endpoints.cartItems, {
         product: productId,
@@ -141,7 +138,7 @@ const Product = () => {
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <span key={i} className={`star ${i <= rating ? 'filled' : ''}`}>
-          &#9733; {/* Unicode cho ngôi sao đầy */}
+          &#9733;
         </span>
       );
     }
@@ -167,14 +164,20 @@ const Product = () => {
           <div className="product-page-prices">
             <p className="product-label">Giá sản phẩm:</p>
             <div className="price-wrapper">
-              {discountedPrice !== null ? (
-                <>
-                  <p className="product-page-price original-price">{formatCurrency(originalPrice)}</p>
-                  <p className="product-page-price discounted-price">{formatCurrency(discountedPrice)}</p>
-                </>
-              ) : (
-                <p className="product-page-price normal-price">{formatCurrency(originalPrice)}</p>
-              )}
+            {product.discount > 0 ? (
+                        <>
+                          <p className='product-price original-price'>
+                            {formatCurrency(originalPrice)}
+                          </p>
+                          <p className='product-price discounted-price'>
+                            {formatCurrency(discountedPrice)}
+                          </p>
+                        </>
+                      ) : (
+                        <p className='product-price discounted-price'>
+                          {formatCurrency(originalPrice)}
+                        </p>
+                      )}
             </div>
           </div>
   
@@ -195,16 +198,15 @@ const Product = () => {
       {/* HIỂN THỊ ĐÁNH GIÁ SẢN PHẨM */}
       <div className="product-reviews-section">
         <h2>Những đánh giá của khách hàng về sản phẩm</h2>
-        <h5 className="write-review-button" onClick={handleWriteReviewClick}>Viết đánh giá </h5>
+        <h5 className="write-review-button" onClick={handleWriteReviewClick}>Viết đánh giá</h5>
       </div>
       <div className="product-reviews">
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
               <p><strong>{review.username}</strong> ({review.first_name} {review.last_name})</p>
-              {/* <p>Đánh giá: {review.rating} sao</p> */}
               <div className="review-rating">
-                {renderStars(review.rating)} {/* Hiển thị ngôi sao dựa trên đánh giá */}
+                {renderStars(review.rating)}
               </div>
               <p>{review.comment}</p>
               <p className="review-date">Ngày tạo: {new Date(review.created_at).toLocaleDateString()}</p>
@@ -240,8 +242,7 @@ const Product = () => {
         </div>
       )}
     </div>
-    
-  );  
+  );
 };
 
 export default Product;
