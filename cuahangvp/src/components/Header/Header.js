@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
 import apiClient, { endpoints, removeAuthToken } from '../../configs/API'; // Import removeAuthToken
 import { MyUserContext, MyDispatchContext } from '../../configs/Contexts';
+import { FaShoppingCart, FaComments } from 'react-icons/fa';
 
 const Header = ({ onCategorySelect, onSearch }) => {
   const [categories, setCategories] = useState([]);
@@ -105,12 +106,16 @@ const Header = ({ onCategorySelect, onSearch }) => {
             <i className="bi bi-cart"></i> Blog
           </Nav.Link>
 
-          <Nav.Link as={Link} to="/cart" className="ms-3">  {/* Sử dụng Link để điều hướng */}
-            <i className="bi bi-cart"></i> Giỏ hàng
+          <Nav.Link as={Link} to="/cart" className="ms-3">
+            <FaShoppingCart /> Giỏ{/* Icon giỏ hàng */}
           </Nav.Link>
 
           <Nav.Link as={Link} to="/orderlist" className="ms-3">  {/* Sử dụng Link để điều hướng */}
             <i className="bi bi-cart"></i> Đơn hàng
+          </Nav.Link>
+
+          <Nav.Link as={Link} to="/chat" className="ms-3"> {/* Thêm mục Chat */}
+            <FaComments /> {/* Icon chat */}
           </Nav.Link>
           
           <Dropdown className="ms-3">

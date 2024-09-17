@@ -190,7 +190,7 @@ const Product = () => {
         </div>
         {discountPercentage > 0 && (
           <div className="product-page-discount-tag">
-            Giảm {discountPercentage}%
+            Giảm giá{discountPercentage*100}%
           </div>
         )}
       </div>
