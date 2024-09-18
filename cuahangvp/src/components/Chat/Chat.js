@@ -21,6 +21,7 @@ const formatTimestamp = (timestamp) => {
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [selectedUserId, setSelectedUserId] = useState(null);
     const user = useContext(MyUserContext);
 
     useEffect(() => {
@@ -30,6 +31,7 @@ const Chat = () => {
             querySnapshot.forEach((doc) => {
                 messagesArray.push({ id: doc.id, ...doc.data() });
             });
+
             setMessages(messagesArray);
         });
 
@@ -42,7 +44,8 @@ const Chat = () => {
                 try {
                     await addDoc(collection(db, 'messages'), {
                         text: newMessage,
-                        user: user.name || `${user.username}`,
+                        senderId: user.id,
+                        recipientId: user.id === 1 ? selectedUserId : 1, // Admin replies to selected user, others to admin
                         createdAt: Timestamp.fromDate(new Date()),
                     });
                     setNewMessage('');
@@ -55,21 +58,48 @@ const Chat = () => {
         }
     };
 
+    // Get unique users who sent messages
+    const uniqueUsers = Array.from(new Set(messages.map(msg => msg.senderId)))
+        .filter(id => id !== 1) // Exclude admin
+        .map(id => {
+            return { id, name: `User ${id}` }; // Replace with actual user names if available
+        });
+
+    const filteredMessages = selectedUserId
+        ? messages.filter(msg => 
+            (msg.senderId === selectedUserId && msg.recipientId === 1) || // Messages from selected user to admin
+            (msg.senderId === 1 && msg.recipientId === selectedUserId)   // Admin's replies to selected user
+        )
+        : messages.filter(msg => 
+            (msg.senderId === 1 && msg.recipientId === user.id) || // Messages from admin to current user
+            (msg.senderId === user.id && msg.recipientId === 1)   // User's messages to admin
+        );
+
     if (!user) {
         return <div>Vui lòng đăng nhập để tham gia trò chuyện...</div>;
     }
 
     return (
         <div className="chat-container">
+            {user.id === 1 && (
+                <div className="user-selector">
+                    <h3>Chọn người dùng để trả lời:</h3>
+                    {uniqueUsers.map((u) => (
+                        <button key={u.id} onClick={() => setSelectedUserId(u.id)}>
+                            {u.name}
+                        </button>
+                    ))}
+                </div>
+            )}
             <div className="chat">
                 <div className="messages-container">
-                    {messages.map((message) => (
+                    {filteredMessages.map((message) => (
                         <div
                             key={message.id}
-                            className={`message ${message.user === user.name ? 'own-message' : 'other-message'}`}
+                            className={`message ${message.senderId === user.id ? 'own-message' : 'other-message'}`}
                         >
                             <div>
-                                <strong>{message.user}:</strong> 
+                                <strong>{message.senderId === user.id ? 'You' : `User ${message.senderId}`}:</strong>
                                 <span className="message-text">{message.text}</span>
                                 <div className="message-time">
                                     {formatTimestamp(message.createdAt)}
