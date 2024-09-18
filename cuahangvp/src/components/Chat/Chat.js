@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { db, Timestamp } from '../../Firebase';
-import { collection, addDoc, query, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, query, onSnapshot, getDocs } from 'firebase/firestore';
 import { MyUserContext } from '../../configs/Contexts';
 import SendIcon from '@mui/icons-material/Send';
 import './Chat.css';
@@ -22,7 +22,21 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [users, setUsers] = useState({});
     const user = useContext(MyUserContext);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const usersCollection = await getDocs(collection(db, 'users'));
+            const usersData = {};
+            usersCollection.forEach(doc => {
+                usersData[doc.id] = doc.data().username; // Giả sử bạn có trường username
+            });
+            setUsers(usersData);
+        };
+
+        fetchUsers();
+    }, []);
 
     useEffect(() => {
         const q = query(collection(db, 'messages'));
@@ -45,7 +59,7 @@ const Chat = () => {
                     await addDoc(collection(db, 'messages'), {
                         text: newMessage,
                         senderId: user.id,
-                        recipientId: user.id === 1 ? selectedUserId : 1, // Admin replies to selected user, others to admin
+                        recipientId: user.id === 1 ? selectedUserId : 1,
                         createdAt: Timestamp.fromDate(new Date()),
                     });
                     setNewMessage('');
@@ -58,22 +72,21 @@ const Chat = () => {
         }
     };
 
-    // Get unique users who sent messages
     const uniqueUsers = Array.from(new Set(messages.map(msg => msg.senderId)))
-        .filter(id => id !== 1) // Exclude admin
+        .filter(id => id !== 1)
         .map(id => {
-            return { id, name: `User ${id}` }; // Replace with actual user names if available
+            return { id, name: users[id] || `User ${id}` }; // Lấy tên từ state users
         });
 
     const filteredMessages = selectedUserId
-        ? messages.filter(msg => 
-            (msg.senderId === selectedUserId && msg.recipientId === 1) || // Messages from selected user to admin
-            (msg.senderId === 1 && msg.recipientId === selectedUserId)   // Admin's replies to selected user
-        )
-        : messages.filter(msg => 
-            (msg.senderId === 1 && msg.recipientId === user.id) || // Messages from admin to current user
-            (msg.senderId === user.id && msg.recipientId === 1)   // User's messages to admin
-        );
+        ? messages.filter(msg =>
+            (msg.senderId === selectedUserId && msg.recipientId === 1) ||
+            (msg.senderId === 1 && msg.recipientId === selectedUserId)
+        ).sort((a, b) => a.createdAt.seconds - b.createdAt.seconds)
+        : messages.filter(msg =>
+            (msg.senderId === 1 && msg.recipientId === user.id) ||
+            (msg.senderId === user.id && msg.recipientId === 1)
+        ).sort((a, b) => a.createdAt.seconds - b.createdAt.seconds);
 
     if (!user) {
         return <div>Vui lòng đăng nhập để tham gia trò chuyện...</div>;
@@ -83,9 +96,13 @@ const Chat = () => {
         <div className="chat-container">
             {user.id === 1 && (
                 <div className="user-selector">
-                    <h3>Chọn người dùng để trả lời:</h3>
+                    <h5>Khách hàng của bạn</h5>
                     {uniqueUsers.map((u) => (
-                        <button key={u.id} onClick={() => setSelectedUserId(u.id)}>
+                        <button 
+                            key={u.id} 
+                            onClick={() => setSelectedUserId(u.id)} 
+                            className={u.id === selectedUserId ? 'selected' : ''}
+                        >
                             {u.name}
                         </button>
                     ))}
@@ -99,7 +116,7 @@ const Chat = () => {
                             className={`message ${message.senderId === user.id ? 'own-message' : 'other-message'}`}
                         >
                             <div>
-                                <strong>{message.senderId === user.id ? 'You' : `User ${message.senderId}`}:</strong>
+                                <strong>{message.senderId === user.id ? 'You' : users[message.senderId] || `User ${message.senderId}`}:</strong>
                                 <span className="message-text">{message.text}</span>
                                 <div className="message-time">
                                     {formatTimestamp(message.createdAt)}
