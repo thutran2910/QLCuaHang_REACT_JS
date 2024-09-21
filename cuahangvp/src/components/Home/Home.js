@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { endpoints, authApi } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Home.css';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Home = ({ category, searchTerm }) => {
   const [products, setProducts] = useState([]);
@@ -10,6 +10,7 @@ const Home = ({ category, searchTerm }) => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
   const user = useContext(MyUserContext);
+  const navigate = useNavigate(); // Sử dụng useNavigate thay vì useHistory
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,10 +29,6 @@ const Home = ({ category, searchTerm }) => {
         }
 
         const response = await apiClient.get(url);
-
-        // Kiểm tra dữ liệu nhận được từ API
-        console.log('Dữ liệu nhận được từ API:', response.data);
-
         const productsWithCorrectPrice = response.data.map(product => {
           const price = parseFloat(product.price);
           const discountedPrice = parseFloat(product.discounted_price);
@@ -58,7 +55,7 @@ const Home = ({ category, searchTerm }) => {
     if (message) {
       const timer = setTimeout(() => {
         setMessage('');
-      }, 2000); // Hiển thị thông báo trong 2 giây
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -75,8 +72,8 @@ const Home = ({ category, searchTerm }) => {
 
   const handleAddToCart = async (productId, quantity = 1) => {
     try {
-      const api = user ? authApi() : apiClient; // Sử dụng authApi nếu đã đăng nhập
-      const cartId = user ? undefined : 11; // Sử dụng cartId cố định nếu không đăng nhập
+      const api = user ? authApi() : apiClient;
+      const cartId = user ? undefined : 11;
 
       const response = await api.post(endpoints.cartItems, {
         product: productId,
@@ -86,12 +83,22 @@ const Home = ({ category, searchTerm }) => {
 
       if (response.status === 201) {
         setMessage('Sản phẩm đã được thêm vào giỏ hàng!');
+        return true; // Trả về true khi thành công
       } else {
         setMessage('Không thể thêm sản phẩm vào giỏ hàng.');
+        return false; // Trả về false khi không thành công
       }
     } catch (error) {
       setMessage('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
       console.error('Error adding to cart:', error);
+      return false; // Trả về false khi có lỗi
+    }
+  };
+
+  const handleBuyNow = async (productId) => {
+    const added = await handleAddToCart(productId);
+    if (added) {
+      navigate('/cart'); // Sử dụng navigate để chuyển hướng
     }
   };
 
@@ -101,10 +108,10 @@ const Home = ({ category, searchTerm }) => {
       <section className='featured-products'>
         <h2>
           {searchTerm
-            ? `Sản phẩm bạn đang muốn tìm kiếm: ${searchTerm}`
+            ? `Từ khóa bạn đang muốn tìm kiếm ' ${searchTerm}'`
             : category
-            ? `Sản phẩm thuộc danh mục: ${category.name}`
-            : 'Sản phẩm ưu đãi'}
+            ? `Sản phẩm thuộc danh mục ${category.name}`
+            : 'Sản phẩm đang được ưu đãi'}
         </h2>
         {loading ? (
           <p>Đang tải dữ liệu...</p>
@@ -148,7 +155,7 @@ const Home = ({ category, searchTerm }) => {
                       <button className='btn-add-to-cart' onClick={() => handleAddToCart(product.id)}>
                         Thêm vào giỏ
                       </button>
-                      <button>Mua ngay</button>
+                      <button onClick={() => handleBuyNow(product.id)}>Mua ngay</button>
                     </div>
                   </div>
                 </div>

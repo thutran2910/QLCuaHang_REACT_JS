@@ -45,7 +45,7 @@ const Login = () => {
       navigate('/');
     } catch (ex) {
       console.error('Login error', ex);
-      setError('Vui lòng nhập lại email hoặc password');
+      setError('Vui lòng nhập lại tên đăng nhập hoặc mật khẩu');
     }
   };
 
@@ -57,7 +57,7 @@ const Login = () => {
           <Form.Group controlId="formBasicEmail">
             <Form.Control
               type="username"
-              placeholder="Username..."
+              placeholder="Tên đăng nhập..."
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               style={styles.input}
@@ -78,7 +78,6 @@ const Login = () => {
               style={styles.passwordToggle}
               onClick={() => setSecureTextEntry(!secureTextEntry)}
             >
-              {secureTextEntry ? 'Show' : 'Hide'}
             </Button>
           </Form.Group>
           {error && (
@@ -98,7 +97,6 @@ const Login = () => {
 // CSS-in-JS styles
 const styles = {
   background: {
-    background: 'linear-gradient(135deg, #f5f5f5, #e0e0e0)',
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
@@ -111,6 +109,7 @@ const styles = {
     padding: '20px',
     width: '100%',
     maxWidth: '400px',
+    position: 'relative', // Để cho nút có thể được định vị bên trong
   },
   title: {
     textAlign: 'center',
@@ -129,7 +128,6 @@ const styles = {
     right: '10px',
     transform: 'translateY(-50%)',
     background: 'transparent',
-    border: 'none',
     cursor: 'pointer',
   },
   loginBtn: {

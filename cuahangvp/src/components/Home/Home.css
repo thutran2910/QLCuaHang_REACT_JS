@@ -7,7 +7,12 @@
 
 /* Phần sản phẩm nổi bật */
 .featured-products {
-  margin-top: 20px; /* Khoảng cách từ phần trên cùng */
+  margin-top: 20px auto; /* Khoảng cách từ phần trên cùng */
+}
+
+h2{
+  font-size: 20px;
+  font-style: italic;
 }
 
 /* Danh sách sản phẩm */
@@ -119,24 +124,27 @@
 
 /* Nút thêm vào giỏ hàng */
 .btn-add-to-cart {
-  background-color: #007bff; /* Màu nền cho nút thêm vào giỏ hàng */
-  color: #fff; /* Màu chữ cho nút thêm vào giỏ hàng */
-  border: none; /* Xóa border của nút */
+  background-color: #f2f4f5; /* Màu nền cho nút thêm vào giỏ hàng */
+  color: #28a745; /* Màu chữ cho nút thêm vào giỏ hàng */
+  border: 1px solid #28a745; /* Đường viền màu xanh giống màu chữ */
   padding: 10px 20px; /* Padding cho nút */
   border-radius: 4px; /* Bo góc cho nút */
   cursor: pointer; /* Hiển thị con trỏ khi rê chuột vào nút */
   transition: background-color 0.3s ease; /* Hiệu ứng chuyển động khi thay đổi màu nền */
 }
 
+/* Hiệu ứng khi rê chuột vào nút */
 .btn-add-to-cart:hover {
-  background-color: #0056b3; /* Màu nền khi rê chuột vào nút */
+  background-color: #28a745; /* Thay đổi màu nền khi rê chuột vào */
+  color: #ffffff; /* Thay đổi màu chữ khi rê chuột vào */
 }
+
 
 /* Nút mua ngay */
 button {
-  background-color: #28a745; /* Màu nền cho nút mua ngay */
-  color: #fff; /* Màu chữ cho nút mua ngay */
-  border: none; /* Xóa border của nút */
+  background-color: #f2f4f5; /* Màu nền cho nút mua ngay */
+  color: #d42111; /* Màu chữ cho nút mua ngay */
+  border: 1px solid #d42111; /* Xóa border của nút */
   padding: 10px 20px; /* Padding cho nút */
   border-radius: 4px; /* Bo góc cho nút */
   cursor: pointer; /* Hiển thị con trỏ khi rê chuột vào nút */
@@ -144,7 +152,8 @@ button {
 }
 
 button:hover {
-  background-color: #218838; /* Màu nền khi rê chuột vào nút mua ngay */
+  background-color: #d42111; /* Màu nền khi rê chuột vào nút mua ngay */
+  color: #ffffff;
 }
 
 .alert {

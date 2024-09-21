@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import apiClient, { endpoints, authApi } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import './Product.css';
@@ -16,6 +16,7 @@ const Product = () => {
   const [isWritingReview, setIsWritingReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const navigate = useNavigate(); 
 
   const handleWriteReviewClick = () => {
     if (user) {
@@ -49,6 +50,13 @@ const Product = () => {
     } catch (error) {
       console.error('Error submitting review:', error);
       setMessage2('Có lỗi xảy ra khi gửi đánh giá.');
+    }
+  };
+
+  const handleBuyNow = async (productId) => {
+    const added = await handleAddToCart(productId);
+    if (added) {
+      navigate('/cart'); // Chuyển hướng đến giỏ hàng
     }
   };
 
@@ -124,12 +132,15 @@ const Product = () => {
 
       if (response.status === 201) {
         setMessage('Sản phẩm đã được thêm vào giỏ hàng!');
+        return true; // Trả về true nếu thêm thành công
       } else {
         setMessage('Không thể thêm sản phẩm vào giỏ hàng.');
+        return false; // Trả về false nếu không thành công
       }
     } catch (error) {
       setMessage('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
       console.error('Error adding to cart:', error);
+      return false; // Trả về false nếu có lỗi
     }
   };
 
@@ -164,20 +175,20 @@ const Product = () => {
           <div className="product-page-prices">
             <p className="product-label">Giá sản phẩm:</p>
             <div className="price-wrapper">
-            {product.discount > 0 ? (
-                        <>
-                          <p className='product-price original-price'>
-                            {formatCurrency(originalPrice)}
-                          </p>
-                          <p className='product-price discounted-price'>
-                            {formatCurrency(discountedPrice)}
-                          </p>
-                        </>
-                      ) : (
-                        <p className='product-price discounted-price'>
-                          {formatCurrency(originalPrice)}
-                        </p>
-                      )}
+              {product.discount > 0 ? (
+                <>
+                  <p className='product-price original-price'>
+                    {formatCurrency(originalPrice)}
+                  </p>
+                  <p className='product-price discounted-price'>
+                    {formatCurrency(discountedPrice)}
+                  </p>
+                </>
+              ) : (
+                <p className='product-price discounted-price'>
+                  {formatCurrency(originalPrice)}
+                </p>
+              )}
             </div>
           </div>
   
@@ -185,12 +196,12 @@ const Product = () => {
   
           <div className="product-page-actions">
             <button className="page-btn-add-to-cart" onClick={() => handleAddToCart(product.id)}>Thêm vào giỏ hàng</button>
-            <button className="page-btn-buy-now">Mua ngay</button>
+            <button className="page-btn-buy-now" onClick={() => handleBuyNow(product.id)}>Mua ngay</button>
           </div>
         </div>
         {discountPercentage > 0 && (
           <div className="product-page-discount-tag">
-            Giảm giá{discountPercentage*100}%
+            Giảm giá {discountPercentage * 100}%
           </div>
         )}
       </div>

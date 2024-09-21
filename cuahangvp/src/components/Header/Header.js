@@ -3,20 +3,22 @@ import { Carousel, Container, Dropdown, Form, Button, Nav } from 'react-bootstra
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
-import apiClient, { endpoints, removeAuthToken } from '../../configs/API'; // Import removeAuthToken
+import apiClient, { endpoints, removeAuthToken } from '../../configs/API';
 import { MyUserContext, MyDispatchContext } from '../../configs/Contexts';
 import { FaShoppingCart, FaComments } from 'react-icons/fa';
 
 const Header = ({ onCategorySelect, onSearch }) => {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const user = useContext(MyUserContext); // Sử dụng context để lấy thông tin người dùng
+  const user = useContext(MyUserContext);
   const dispatch = useContext(MyDispatchContext);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('home');
+
   const images = [
-    'https://via.placeholder.com/1200x400?text=Slide+1',
-    'https://via.placeholder.com/1200x400?text=Slide+2',
-    'https://via.placeholder.com/1200x400?text=Slide+3',
+    'https://media.istockphoto.com/id/649195666/vi/anh/v%E1%BA%ADt-t%C6%B0-v%C4%83n-ph%C3%B2ng-v%E1%BA%ABn-c%C3%B2n-s%E1%BB%91ng.jpg?s=1024x1024&w=is&k=20&c=Z5-2-jnMm7C5NsV31a1rw74_uc1ptbzxtWRNt7GKIKY=',
+    'https://toplist.vn/images/800px/nha-sach-alphabook-316506.jpg',
+    'https://i.pinimg.com/736x/d7/3e/55/d73e551e54caf6ef7639f382bea8be5d.jpg',
   ];
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Header = ({ onCategorySelect, onSearch }) => {
 
   const handleCategorySelect = (category) => {
     onCategorySelect(category);
-    setSearchTerm(''); // Xóa từ khóa tìm kiếm khi chọn danh mục
+    setSearchTerm('');
   };
 
   const handleSearchChange = (event) => {
@@ -47,9 +49,17 @@ const Header = ({ onCategorySelect, onSearch }) => {
   };
 
   const handleLogout = () => {
-    removeAuthToken();  // Xóa token
-    dispatch({ type: 'logout' }); // Đăng xuất
-    navigate('/');  // Quay về trang chủ
+    removeAuthToken();
+    dispatch({ type: 'logout' });
+    navigate('/');
+  };
+
+  const handleChatClick = () => {
+    if (!user) {
+      navigate('/login'); // Điều hướng đến trang đăng nhập nếu chưa đăng nhập
+    } else {
+      navigate('/chat'); // Điều hướng đến trang chat nếu đã đăng nhập
+    }
   };
 
   return (
@@ -67,11 +77,7 @@ const Header = ({ onCategorySelect, onSearch }) => {
             <img
               className="d-block w-100 img-carousel"
               src={image}
-              alt={`slide-${index}`}
             />
-            <Carousel.Caption>
-              <h3>Slide {index + 1}</h3>
-            </Carousel.Caption>
           </Carousel.Item>
         ))}
       </Carousel>
@@ -102,21 +108,23 @@ const Header = ({ onCategorySelect, onSearch }) => {
             <Button variant="outline-light" type="submit">Tìm kiếm</Button>
           </Form>
 
-          <Nav.Link as={Link} to="/news" className="ms-3">  {/* Sử dụng Link để điều hướng */}
-            <i className="bi bi-cart"></i> Blog
-          </Nav.Link>
+                  <Nav.Link as={Link} to="/news" className={`ms-3 ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>
+          <i className="bi bi-cart"></i> Blog
+        </Nav.Link>
 
-          <Nav.Link as={Link} to="/cart" className="ms-3">
-            <FaShoppingCart /> Giỏ{/* Icon giỏ hàng */}
-          </Nav.Link>
+        <Nav.Link as={Link} to="/cart" className={`ms-3 ${activeTab === 'cart' ? 'active' : ''}`} onClick={() => setActiveTab('cart')}>
+          <FaShoppingCart /> Giỏ
+        </Nav.Link>
 
-          <Nav.Link as={Link} to="/orderlist" className="ms-3">  {/* Sử dụng Link để điều hướng */}
-            <i className="bi bi-cart"></i> Đơn hàng
-          </Nav.Link>
+        <Nav.Link as={Link} to="/orderlist" className={`ms-3 ${activeTab === 'orderlist' ? 'active' : ''}`} onClick={() => setActiveTab('orderlist')}>
+          <i className="bi bi-cart"></i> Đơn hàng
+        </Nav.Link>
 
-          <Nav.Link as={Link} to="/chat" className="ms-3"> {/* Thêm mục Chat */}
-            <FaComments /> {/* Icon chat */}
-          </Nav.Link>
+        <Nav.Link onClick={handleChatClick} className={`ms-3 ${activeTab === 'chat' ? 'active' : ''}`}>
+          <FaComments /> Chat
+        </Nav.Link>
+
+
           
           <Dropdown className="ms-3">
             <Dropdown.Toggle variant="success" id="dropdown-basic">

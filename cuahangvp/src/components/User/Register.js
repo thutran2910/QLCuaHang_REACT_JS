@@ -45,8 +45,7 @@ const Register = () => {
 
     try {
       const res = await apiClient.post(endpoints.user, formData);
-
-      if (res.status === 201) { // 201 Created
+      if (res.status === 201) {
         setSuccess('Tài khoản đã được tạo thành công.');
         setFirstname('');
         setLastname('');
@@ -56,13 +55,9 @@ const Register = () => {
         setConfirmPassword('');
         setAvatar(null);
       } else {
-        // Log the response for debugging
-        console.error('Server response:', res);
         setErrors({ server: res.data.detail || 'Đăng ký thất bại.' });
       }
     } catch (error) {
-      // Log detailed error for debugging
-      console.error('Error during registration:', error.response?.data || error);
       setErrors({ server: error.response?.data?.detail || 'Đăng ký thất bại.' });
     }
   };
@@ -72,7 +67,7 @@ const Register = () => {
       <Title>Đăng ký tài khoản mới</Title>
       {success && <Alert type="success">{success}</Alert>}
       {errors.server && <Alert type="error">{errors.server}</Alert>}
-      <form onSubmit={handleRegister}>
+      <Form onSubmit={handleRegister}>
         <FormGroup>
           <label>Họ của bạn là gì?</label>
           <FormControl
@@ -135,7 +130,7 @@ const Register = () => {
           />
         </FormGroup>
         <Button type="submit">Đăng ký</Button>
-      </form>
+      </Form>
     </Container>
   );
 };
@@ -145,6 +140,10 @@ const Container = styled.div`
   margin-top: 30px;
   max-width: 600px;
   margin: 0 auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h2`
@@ -152,6 +151,11 @@ const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 2rem;
   color: #333;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
 `;
 
 const FormGroup = styled.div`
@@ -165,10 +169,16 @@ const FormControl = styled.input`
   border-radius: 5px;
   border: 1px solid #ced4da;
   margin-top: 5px;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
-  width: 150px; /* Reduced width */
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   background-color: #007bff;
@@ -177,6 +187,7 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  transition: background-color 0.2s;
 
   &:hover {
     background-color: #0056b3;

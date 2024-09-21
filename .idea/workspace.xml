@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="738d9567-5e25-4535-a829-d07ea621b220" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Cart/Cart.css" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Cart/Cart.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Chat/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Header/Header.css" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Header/Header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Header/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Home/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Home/Home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Home/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Order/Order.css" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Order/Order.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Product/Product.css" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Product/Product.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/Product/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/Product/Product.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/User/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cuahangvp/src/components/User/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/cuahangvp/src/components/User/Register.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2mLHfDIBAa9ZfWMK7C6rTAzMW4T" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "E:/QuanLyCuaHang/QLbanDoDung"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="738d9567-5e25-4535-a829-d07ea621b220" name="Changes" comment="" />
+      <created>1726849038162</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726849038162</updated>
+    </task>
+    <servers />
+  </component>
+</project>

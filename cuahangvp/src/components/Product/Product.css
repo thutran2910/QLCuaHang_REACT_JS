@@ -119,7 +119,7 @@
                 0 0 40px rgba(255, 0, 0, 0.5), 
                 0 0 60px rgba(255, 0, 0, 0.3);
   }
-  100% {
+  500% {
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.7), 
                 0 0 20px rgba(255, 0, 0, 0.5), 
                 0 0 30px rgba(255, 0, 0, 0.3);
@@ -134,23 +134,35 @@
   margin-top: 20px;
 }
 
-.page-btn-add-to-cart,
-.page-btn-buy-now {
+.page-btn-add-to-cart{
+  background-color: #f0f0f0 !important;
   padding: 10px 20px;
   font-size: 16px;
-  border: none;
+  border: 2px solid rgb(13, 223, 13);
   border-radius: 5px;
   cursor: pointer;
-  color: white;
+  color: rgb(29, 222, 15);
+  width: 300px;
+}
+.page-btn-buy-now {
+  background-color: #f0f0f0 !important;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 2px solid rgb(243, 67, 8);
+  border-radius: 5px;
+  cursor: pointer;
+  color: rgb(235, 19, 19);
   width: 300px;
 }
 
-.page-btn-add-to-cart {
-  background-color: #4caf50; /* Màu xanh cho nút thêm vào giỏ hàng */
+.page-btn-add-to-cart:hover {
+  background-color: #4caf50 !important; /* Màu xanh cho nút thêm vào giỏ hàng */
+  color: #f0f0f0;
 }
 
-.page-btn-buy-now {
-  background-color: #f44336; /* Màu đỏ cho nút mua ngay */
+.page-btn-buy-now:hover {
+  background-color: #f44336 !important; /* Màu đỏ cho nút mua ngay */
+  color: #f0f0f0 !important;
 }
 
 .alert {
@@ -251,7 +263,7 @@
   transform: translate(-50%, -50%) !important; /* Căn giữa hộp đánh giá */
   width: 500px !important; /* Chiều rộng của hộp */
   padding: 50px !important;
-  background-color: rgb(195, 237, 211) !important;
+  background-color: rgb(236, 236, 236) !important;
   border-radius: 10px !important;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3) !important; /* Đổ bóng để làm nổi bật hộp */
   z-index: 2000 !important; /* Đảm bảo hộp nằm trên các phần tử khác */
@@ -265,13 +277,13 @@
   right: 10px;
   font-size: 18px;
   font-weight: bold;
-  background-color:rgb(6, 216, 108);
+  background-color:rgb(165, 163, 163);
   border: none;
   cursor: pointer;
   color: #141313;
 }
 .close-button:hover {
-  background-color:rgb(228, 64, 64);
+  background-color:rgb(214, 124, 124);
 }
 
 /* Tiêu đề hộp đánh giá */
@@ -302,9 +314,9 @@
 
 /* Nút gửi đánh giá */
 .submit-button {
-  background-color: #5cca60; /* Màu xanh cho nút gửi */
-  color: white;
-  border: none;
+  background-color: #ffffff; /* Màu xanh cho nút gửi */
+  color: rgb(158, 158, 158);
+  border: 2px solid rgb(158, 158, 158);
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
@@ -313,6 +325,6 @@
 }
 
 .submit-button:hover {
-  background-color: #2c9a31; /* Màu xanh đậm hơn khi hover */
+  background-color: #818481; /* Màu xanh đậm hơn khi hover */
 }
 

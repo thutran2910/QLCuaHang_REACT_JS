@@ -88,10 +88,6 @@ const Chat = () => {
             (msg.senderId === user.id && msg.recipientId === 1)
         ).sort((a, b) => a.createdAt.seconds - b.createdAt.seconds);
 
-    if (!user) {
-        return <div>Vui lòng đăng nhập để tham gia trò chuyện...</div>;
-    }
-
     return (
         <div className="chat-container">
             {user.id === 1 && (

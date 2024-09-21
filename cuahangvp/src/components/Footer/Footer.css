@@ -4,8 +4,8 @@
 .footer-container {
   display: flex;
   flex-direction: column;
-  background-color: #065aae; /* Xanh dương */
-  color: white; /* Chữ trắng */
+  background-color: #8388a0; /* Xanh dương */
+  color: rgb(255, 254, 254); /* Chữ trắng */
   width: 100%;
   box-sizing: border-box;
 }
@@ -48,7 +48,7 @@
 
 /* Phần chữ cuộn */
 .scroll-text {
-  background-color: #05468b; /* Xanh đậm hơn */
+  background-color: #004284; /* Xanh đậm hơn */
   color: white;
   text-align: center;
   padding: 0.5rem;

@@ -4,25 +4,31 @@
   justify-content: space-between;
   padding: 20px;
   box-sizing: border-box;
+  width: 90%;
+  margin: 0 auto;
 }
 
 /* Phần thông tin thanh toán */
 .order-info {
   flex: 0 0 60%; /* Chiếm 60% chiều rộng */
-  padding-right: 20px;
-  border-right: 1px solid #ccc;
-  box-sizing: border-box;
+  padding: 20px;
+  border-right: 1px solid #ddd; /* Nhẹ hơn để tạo cảm giác mềm mại */
+  background-color: #f7f9fc; /* Nền sáng hơn cho phần thông tin */
+  border-radius: 8px; /* Bo góc cho toàn bộ phần */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
 }
 
 .order-info h2 {
   margin-top: 0;
-  font-size: 1.5em;
+  font-size: 1.5em; /* Tăng kích thước tiêu đề */
+  color: #333; /* Màu tối cho tiêu đề */
 }
 
 .order-info label {
   display: block;
   margin-bottom: 15px;
   position: relative;
+  color: #555; /* Màu cho nhãn */
 }
 
 .order-info textarea {
@@ -34,6 +40,12 @@
   box-sizing: border-box;
   font-size: 1em;
   resize: none;
+  transition: border-color 0.3s; /* Hiệu ứng chuyển màu khi focus */
+}
+
+.order-info textarea:focus {
+  border-color: #3498db; /* Màu viền khi focus */
+  outline: none; /* Xóa outline mặc định */
 }
 
 .order-info select {
@@ -43,16 +55,23 @@
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 1em;
+  transition: border-color 0.3s; /* Hiệu ứng chuyển màu khi focus */
+}
+
+.order-info select:focus {
+  border-color: #3498db; /* Màu viền khi focus */
+  outline: none; /* Xóa outline mặc định */
 }
 
 .order-info .order-total {
-  font-size: 1.2em;
+  font-size: 1.5em; /* Tăng kích thước cho tổng thanh toán */
   font-weight: bold;
   margin-top: 20px;
+  color: #333; /* Màu cho tổng thanh toán */
 }
 
 .order-info .btn-checkout {
-  background-color: #3498db;
+  background-color: #28a745; /* Màu xanh lá cho nút xác nhận */
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -62,11 +81,12 @@
   margin-top: 20px;
   display: block;
   text-align: center;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s; /* Thêm hiệu ứng chuyển động */
 }
 
 .order-info .btn-checkout:hover {
-  background-color: #2980b9;
+  background-color: #218838; /* Tối hơn khi hover */
+  transform: scale(1.05); /* Phóng to một chút khi hover */
 }
 
 .order-info .error-text {
@@ -75,6 +95,7 @@
   display: block;
   margin-top: 5px;
 }
+
 
 /* Phần chi tiết giỏ hàng */
 .order-details {

@@ -103,7 +103,7 @@
   width: 40px; /* Kích thước của nút */
   height: 40px;
   font-size: 1.5em; /* Kích thước chữ */
-  border: 1px solid #75767b;
+  border: 1px solid #515253;
   background-color: #b9b6b6;
   cursor: pointer;
   display: flex;
@@ -111,6 +111,7 @@
   justify-content: center; /* Căn giữa dấu + và - */
   border-radius: 3px;
   margin: 0 5px; /* Khoảng cách giữa nút và ô nhập số lượng */
+  color: #fff;
 }
 
 /* Ô nhập số lượng */
