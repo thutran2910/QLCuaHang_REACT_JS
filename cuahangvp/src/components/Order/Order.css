@@ -95,7 +95,9 @@
   display: block;
   margin-top: 5px;
 }
-
+.error-message{
+  color: #d9534f; 
+}
 
 /* Phần chi tiết giỏ hàng */
 .order-details {

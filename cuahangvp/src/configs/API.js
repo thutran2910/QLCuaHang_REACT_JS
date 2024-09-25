@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.0.104:8000/';
+const BASE_URL = 'http://192.168.0.103:8000/';
 
 export const endpoints = {
   category: '/category/',
@@ -19,6 +19,7 @@ export const endpoints = {
   reviews: '/review/',
   createOrder: '/order/', 
   orderList: () => '/orderlist/',  // Endpoint mới để lấy danh sách hóa đơn của người dùng
+  momoPayment: '/momo/payment/',  // Thêm endpoint cho thanh toán Momo
 };
 
 export const setAuthToken = (token) => {
