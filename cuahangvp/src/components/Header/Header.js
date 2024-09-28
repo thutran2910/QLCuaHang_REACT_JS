@@ -36,8 +36,9 @@ const Header = ({ onCategorySelect, onSearch }) => {
 
   const handleCategorySelect = (category) => {
     onCategorySelect(category);
-    setSearchTerm('');
-  };
+    setSearchTerm(''); // Reset search term
+    navigate('/'); // Reset active tab
+};
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -56,9 +57,9 @@ const Header = ({ onCategorySelect, onSearch }) => {
 
   const handleChatClick = () => {
     if (!user) {
-      navigate('/login'); // Điều hướng đến trang đăng nhập nếu chưa đăng nhập
+      navigate('/login');
     } else {
-      navigate('/chat'); // Điều hướng đến trang chat nếu đã đăng nhập
+      navigate('/chat');
     }
   };
 
@@ -74,10 +75,7 @@ const Header = ({ onCategorySelect, onSearch }) => {
       <Carousel>
         {images.map((image, index) => (
           <Carousel.Item key={index}>
-            <img
-              className="d-block w-100 img-carousel"
-              src={image}
-            />
+            <img className="d-block w-100 img-carousel" src={image} />
           </Carousel.Item>
         ))}
       </Carousel>
@@ -108,24 +106,22 @@ const Header = ({ onCategorySelect, onSearch }) => {
             <Button variant="outline-light" type="submit">Tìm kiếm</Button>
           </Form>
 
-                  <Nav.Link as={Link} to="/news" className={`ms-3 ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>
-          <i className="bi bi-cart"></i> Blog
-        </Nav.Link>
+          <Nav.Link as={Link} to="/news" className={`ms-3 ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>
+            <i className="bi bi-cart"></i> Blog
+          </Nav.Link>
 
-        <Nav.Link as={Link} to="/cart" className={`ms-3 ${activeTab === 'cart' ? 'active' : ''}`} onClick={() => setActiveTab('cart')}>
-          <FaShoppingCart /> Giỏ
-        </Nav.Link>
+          <Nav.Link as={Link} to="/cart" className={`ms-3 ${activeTab === 'cart' ? 'active' : ''}`} onClick={() => setActiveTab('cart')}>
+            <FaShoppingCart /> Giỏ
+          </Nav.Link>
 
-        <Nav.Link as={Link} to="/orderlist" className={`ms-3 ${activeTab === 'orderlist' ? 'active' : ''}`} onClick={() => setActiveTab('orderlist')}>
-          <i className="bi bi-cart"></i> Đơn hàng
-        </Nav.Link>
+          <Nav.Link as={Link} to="/orderlist" className={`ms-3 ${activeTab === 'orderlist' ? 'active' : ''}`} onClick={() => setActiveTab('orderlist')}>
+            <i className="bi bi-cart"></i> Đơn hàng
+          </Nav.Link>
 
-        <Nav.Link onClick={handleChatClick} className={`ms-3 ${activeTab === 'chat' ? 'active' : ''}`}>
-          <FaComments /> Chat
-        </Nav.Link>
+          <Nav.Link onClick={handleChatClick} className={`ms-3 ${activeTab === 'chat' ? 'active' : ''}`} >
+            <FaComments /> Chat
+          </Nav.Link>
 
-
-          
           <Dropdown className="ms-3">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
               {user ? `Xin chào, ${user.username}` : 'Tài khoản'}

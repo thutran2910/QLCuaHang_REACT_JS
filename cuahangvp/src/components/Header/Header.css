@@ -120,6 +120,5 @@
 .nav-link.active {
     font-weight: bold;
     color: #b0bec5; /* Màu sắc khi tab được chọn */
-    border-bottom: 2px solid #b0bec5; /* Đường viền dưới tab được chọn */
   }
   

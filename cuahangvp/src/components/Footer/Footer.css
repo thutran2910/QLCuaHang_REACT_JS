@@ -4,7 +4,7 @@
 .footer-container {
   display: flex;
   flex-direction: column;
-  background-color: #8388a0; /* Xanh dương */
+  background-color: #065aae; /* Xanh dương */
   color: rgb(255, 254, 254); /* Chữ trắng */
   width: 100%;
   box-sizing: border-box;
