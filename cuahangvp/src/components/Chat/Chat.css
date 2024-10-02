@@ -1,73 +1,91 @@
 .chat-container {
   display: flex;
-  height: 100vh; /* Full height */
-  width: 80%; /* Limit width to 80% of the screen */
-  margin: 0 auto; /* Center the chat container */
+  height: 100vh; /* Chiều cao đầy đủ */
+  width: 80%; /* Chiều rộng giới hạn */
+  margin: 0 auto; /* Căn giữa khung chat */
+  background-color: #f9f9f9; /* Màu nền nhẹ */
+}
+
+.chat-title {
+  padding: 15px; /* Padding cho tiêu đề */
+  background-color: #4c9ef5; /* Màu nền cho tiêu đề */
+  color: white; /* Màu chữ tiêu đề */
+  text-align: center; /* Căn giữa tiêu đề */
+  font-size: 1.5em; /* Kích thước chữ cho tiêu đề */
+  width: 100%; /* Đảm bảo tiêu đề chiếm chiều rộng đầy đủ */
+  border-top-left-radius: 8px; /* Bo góc bên trái trên */
+  border-top-right-radius: 8px; /* Bo góc bên phải trên */
 }
 
 .user-selector {
-  width: 30%;
-  border-right: 1px solid #ccc;
+  width: 30%; /* Chiều rộng cho danh sách người dùng */
+  border-right: 1px solid #ccc; /* Đường viền bên phải */
   padding: 10px;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Bao gồm padding trong kích thước */
   display: flex;
-  flex-direction: column; /* Arrange buttons vertically */
+  flex-direction: column; /* Sắp xếp nút theo chiều dọc */
 }
 
 .user-selector button {
-  margin: 5px 0; /* Space between buttons */
+  margin: 5px 0; /* Khoảng cách giữa các nút */
   padding: 10px;
-  text-align: center; /* Align text to the left */
-  border: 1px solid #0f68c7;
-  color: black;
-  background-color: #fff;
+  text-align: center; /* Căn giữa văn bản trong nút */
+  border: 1px solid #0f68c7; /* Đường viền cho nút */
+  color: black; /* Màu chữ */
+  background-color: #fff; /* Màu nền cho nút */
+  border-radius: 4px; /* Bo góc cho nút */
+  cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
 }
 
 .user-selector button.selected {
-  background-color: #4c9ef5; /* Highlight color */
-  color: white; /* Text color when selected */
+  background-color: #4c9ef5; /* Màu nền khi được chọn */
+  color: white; /* Màu chữ khi được chọn */
 }
 
 .chat {
-  width: 70%;
+  width: 80%; /* Chiều rộng cho khu vực chat */
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+  border: 1px solid #ccc; /* Đường viền cho khung chat */
+  border-radius: 8px; /* Bo góc cho khung chat */
+  overflow: hidden; /* Ẩn nội dung vượt ra ngoài */
+  margin: 0 auto;
 }
 
 .messages-container {
-  flex: 1;
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 10px;
-  background-color: #fff;
+  flex: 1; /* Tự động chiếm không gian còn lại */
+  max-height: 400px; /* Chiều cao tối đa */
+  overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá chiều cao */
+  padding: 10px; /* Padding cho vùng tin nhắn */
+  background-color: #fff; /* Màu nền cho vùng tin nhắn */
 }
 
 .input-container {
-  display: flex;
-  padding: 10px;
-  background-color: #f4f4f4;
+  display: flex; /* Sắp xếp các phần tử theo hàng ngang */
+  padding: 10px; /* Padding cho vùng nhập liệu */
+  background-color: #f4f4f4; /* Màu nền cho vùng nhập liệu */
 }
 
 .input-text {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  flex: 1; /* Chiếm không gian còn lại */
+  padding: 8px; /* Padding cho ô nhập liệu */
+  border: 1px solid #ccc; /* Đường viền cho ô nhập liệu */
+  border-radius: 4px; /* Bo góc cho ô nhập liệu */
 }
 
 .message {
-  margin: 5px 0;
+  margin: 5px 0; /* Khoảng cách giữa các tin nhắn */
 }
 
 .own-message {
-  text-align: right;
+  text-align: right; /* Căn phải cho tin nhắn của người dùng */
 }
 
 .other-message {
-  text-align: left;
+  text-align: left; /* Căn trái cho tin nhắn của người khác */
 }
 
 .message-time {
-  font-size: 0.8em;
-  color: #888;
+  font-size: 0.8em; /* Kích thước chữ cho thời gian */
+  color: #888; /* Màu cho thời gian */
 }

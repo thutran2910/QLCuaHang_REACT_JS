@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
+import { useNavigate } from 'react-router-dom';
 import './Order.css';
 
 const formatCurrency = (value, fractionDigits = 3) => {
@@ -22,6 +23,7 @@ const Order = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
+  const navigate = useNavigate(); // Sử dụng useNavigate thay vì useHistory
   const [errors, setErrors] = useState({
     shippingAddress: false,
     paymentMethod: false,
@@ -187,6 +189,18 @@ const Order = () => {
       setError('Có lỗi xảy ra khi tạo đơn hàng.');
       console.error('Lỗi khi thanh toán:', error.response ? error.response.data : error.message);
     }
+
+    // Nếu phương thức thanh toán là trực tuyến, chuyển hướng đến trang thanh toán
+    if (paymentMethod === 'online') {
+      const orderDetails = {
+        total_amount: totalAmount,
+        shipping_address: shippingAddress,
+        payment_method: paymentMethod,
+        // Thêm thông tin khác nếu cần
+      };
+      navigate('/payment', { state: { orderDetails } }); // Điều hướng với thông tin đơn hàng
+      return;
+    }
   };
 
   return (
@@ -244,7 +258,7 @@ const Order = () => {
           <div>
             <p>Thông tin chuyển khoản:</p>
             <ul>
-              <li>Số tài khoản: 0913747367</li>
+              <li>Số tài khoản: 4857299482001</li>
               <li>Ngân hàng: Agribank, Chi nhánh Trung tâm Sài Gòn</li>
               <li>Chủ tài khoản: Hồ Minh Anh</li>
             </ul>

@@ -53,6 +53,7 @@ const Login = () => {
     <div style={styles.background}>
       <div style={styles.containerLogin}>
         <h1 style={styles.title}>ĐĂNG NHẬP</h1>
+        <p style={styles.welcomeMessage}>Chào mừng bạn trở lại! Vui lòng đăng nhập để tiếp tục.</p>
         <Form>
           <Form.Group controlId="formBasicEmail">
             <Form.Control
@@ -78,6 +79,7 @@ const Login = () => {
               style={styles.passwordToggle}
               onClick={() => setSecureTextEntry(!secureTextEntry)}
             >
+              {/* Có thể thêm biểu tượng hiển thị mật khẩu */}
             </Button>
           </Form.Group>
           {error && (
@@ -89,6 +91,9 @@ const Login = () => {
             ĐĂNG NHẬP
           </Button>
         </Form>
+        <p style={styles.registerLink}>
+          Chưa có tài khoản? <a href="/register">Đăng ký tại đây</a>
+        </p>
       </div>
     </div>
   );
@@ -101,9 +106,12 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundImage: 'url("https://toigingiuvedep.vn/wp-content/uploads/2021/08/nhung-background-book-background-sach-dep-day-an-tuong.jpg")', // Thêm ảnh nền
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   },
   containerLogin: {
-    background: '#fff',
+    background: 'rgba(255, 255, 255, 0.9)', // Thêm độ trong suốt để nhìn thấy ảnh nền
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
     padding: '20px',
@@ -115,6 +123,11 @@ const styles = {
     textAlign: 'center',
     marginBottom: '20px',
     color: '#333',
+  },
+  welcomeMessage: {
+    textAlign: 'center',
+    marginBottom: '20px',
+    color: '#555',
   },
   input: {
     marginBottom: '15px',
@@ -137,6 +150,11 @@ const styles = {
   },
   alert: {
     marginTop: '10px',
+  },
+  registerLink: {
+    textAlign: 'center',
+    marginTop: '10px',
+    color: '#007bff',
   },
 };
 
