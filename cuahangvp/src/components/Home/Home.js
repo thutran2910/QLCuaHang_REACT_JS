@@ -60,16 +60,6 @@ const Home = ({ category, searchTerm }) => {
     }
   }, [message]);
 
-  const formatCurrency = (value) => {
-    if (isNaN(value)) return value;
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3
-    }).format(value);
-  };
-
   const handleAddToCart = async (productId, quantity = 1) => {
     try {
       const api = user ? authApi() : apiClient;
@@ -139,15 +129,15 @@ const Home = ({ category, searchTerm }) => {
                       {product.discount > 0 ? (
                         <>
                           <p className='product-price original-price'>
-                            {formatCurrency(originalPrice)}
+                            {originalPrice} VND
                           </p>
                           <p className='product-price discounted-price'>
-                            {formatCurrency(discountedPrice)}
+                            {discountedPrice} VND
                           </p>
                         </>
                       ) : (
                         <p className='product-price discounted-price'>
-                          {formatCurrency(originalPrice)}
+                          {originalPrice} VND
                         </p>
                       )}
                     </div>

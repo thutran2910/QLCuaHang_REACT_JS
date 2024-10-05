@@ -5,6 +5,10 @@
   margin: 0 auto; /* Căn giữa khung chat */
   background-color: #f9f9f9; /* Màu nền nhẹ */
 }
+h2 {
+  margin-top: 20px;
+  padding: 20px;
+}
 
 .chat-title {
   padding: 15px; /* Padding cho tiêu đề */

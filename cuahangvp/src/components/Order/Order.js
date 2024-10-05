@@ -2,17 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
 import './Order.css';
-
-const formatCurrency = (value, fractionDigits = 3) => {
-  if (isNaN(value)) return value;
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3
-  }).format(value);
-};
 
 const Order = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -23,7 +15,7 @@ const Order = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
-  const navigate = useNavigate(); // Sử dụng useNavigate thay vì useHistory
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({
     shippingAddress: false,
     paymentMethod: false,
@@ -33,6 +25,7 @@ const Order = () => {
   const [bankTransferImage, setBankTransferImage] = useState(null);
   const user = useContext(MyUserContext);
 
+  // Fetch cart items
   useEffect(() => {
     const fetchCartItems = async () => {
       let api = apiClient;
@@ -72,6 +65,7 @@ const Order = () => {
     fetchCartItems();
   }, [user]);
 
+  // Calculate total amount
   useEffect(() => {
     const total = cartItems.reduce((sum, item) => {
       const discountedPrice = parseFloat(item.product.discounted_price);
@@ -81,6 +75,7 @@ const Order = () => {
     setTotalAmount(total);
   }, [cartItems]);
 
+  // Set user details if logged in
   useEffect(() => {
     if (user && user.username) {
       setName(user.username);
@@ -150,6 +145,7 @@ const Order = () => {
         quantity: item.quantity,
         priceTong: item.priceTong
       }))));
+
       if (!user) {
         formData.append('name', name);
         formData.append('email', email);
@@ -166,7 +162,15 @@ const Order = () => {
       });
 
       if (response.status === 201) {
-        alert('Đơn hàng đã được tạo thành công!');
+        if (paymentMethod === 'online') {
+          // Handle online payment here (excluding MoMo)
+          alert('Đơn hàng đã được tạo thành công! Bạn sẽ được chuyển đến trang thanh toán.');
+          // Redirect to payment page or implement online payment logic here
+          // window.location.href = 'URL thanh toán trực tuyến';
+        } else {
+          alert('Đơn hàng đã được tạo thành công!');
+        }
+
         setCartItems([]);
         setShippingAddress('');
         setPaymentMethod('cash');
@@ -188,18 +192,6 @@ const Order = () => {
     } catch (error) {
       setError('Có lỗi xảy ra khi tạo đơn hàng.');
       console.error('Lỗi khi thanh toán:', error.response ? error.response.data : error.message);
-    }
-
-    // Nếu phương thức thanh toán là trực tuyến, chuyển hướng đến trang thanh toán
-    if (paymentMethod === 'online') {
-      const orderDetails = {
-        total_amount: totalAmount,
-        shipping_address: shippingAddress,
-        payment_method: paymentMethod,
-        // Thêm thông tin khác nếu cần
-      };
-      navigate('/payment', { state: { orderDetails } }); // Điều hướng với thông tin đơn hàng
-      return;
     }
   };
 
@@ -281,13 +273,13 @@ const Order = () => {
           />
         </label>
         <div className='order-total'>
-          <span>Tổng thanh toán: {formatCurrency(totalAmount)}</span>
+          <span>Tổng thanh toán: {totalAmount} VND</span>
         </div>
         <button className='btn-checkout' onClick={handleCheckout}>
           Xác nhận đặt hàng
         </button>
       </div>
-  
+
       <div className='order-details'>
         <h2>Chi tiết đơn hàng</h2>
         {cartItems.length > 0 ? (
@@ -296,7 +288,7 @@ const Order = () => {
               const originalPrice = parseFloat(item.product.price);
               const discount = parseFloat(item.product.discount);
               const discountedPrice = parseFloat(item.product.discounted_price);
-  
+
               return (
                 <div className='order-item' key={item.product.id}>
                   <img src={item.product.image_url} alt={item.product.name} className='order-item-image' />
@@ -305,17 +297,17 @@ const Order = () => {
                     <div className='order-item-price'>
                       {discount > 0 ? (
                         <div className='price-container'>
-                          <p className='original-price'>{formatCurrency(originalPrice)}</p>
-                          <p className='discounted-price'>{formatCurrency(discountedPrice)}</p>
+                          <p className='original-price'>{originalPrice} VND</p>
+                          <p className='discounted-price'>{discountedPrice} VND</p>
                         </div>
                       ) : (
-                        <p className='no-discount-price'>{formatCurrency(originalPrice)}</p>
+                        <p className='no-discount-price'>{originalPrice} VND</p>
                       )}
                     </div>
                     <p className='order-item-quantity'>Số lượng: {item.quantity}</p>
                     <p className='price-tong'>
                       Tổng giá: 
-                          <span className='original-price'>{formatCurrency(item.priceTong)}</span>
+                      <span className='original-price'>{item.priceTong} VND</span>
                     </p>
                   </div>
                 </div>

@@ -4,16 +4,6 @@ import { MyUserContext } from '../../configs/Contexts';
 import './Cart.css';
 import { Link } from 'react-router-dom';
 
-const formatCurrency = (value) => {
-  if (isNaN(value)) return value;
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3
-  }).format(value);
-};
-
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,11 +106,11 @@ const Cart = () => {
                   <div className={`cart-item-price ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
                     {discount > 0 ? (
                       <>
-                        <p className='original-price'>{formatCurrency(originalPrice)}</p>
-                        <p className='discounted-price'>{formatCurrency(discountedPrice)}</p>
+                        <p className='original-price'>{originalPrice} VND</p>
+                        <p className='discounted-price'>{discountedPrice} VND</p>
                       </>
                     ) : (
-                      <p className='original-price'>{formatCurrency(originalPrice)}</p>
+                      <p className='original-price'>{originalPrice} VND</p>
                     )}
                   </div>
                   {discount > 0 && (
@@ -139,7 +129,7 @@ const Cart = () => {
                   <div className={`price-tong ${discount > 0 ? 'has-discount' : 'no-discount'}`}>
                     <span>Tổng giá: </span>
                     <span className={discount > 0 ? 'original-price' : ''}>
-                      {formatCurrency(totalPrice)}
+                      {totalPrice} VND
                     </span>
                   </div>
                   <button className='remove-item-button' onClick={() => handleRemoveItem(item.id)}>

@@ -1,156 +1,37 @@
-/* Container cho danh sách đơn hàng */
 .order-list-container {
   padding: 20px;
-  max-width: 1200px;
-  margin: auto;
+  background-color: #f9f9f9;
 }
 
-/* Tiêu đề cho danh sách đơn hàng */
-.order-list-container h3 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
+.order-list {
+  display: flex;
+  flex-direction: column; /* Xếp theo hàng dọc */
+  gap: 10px; /* Khoảng cách giữa các đơn hàng */
+}
+
+h3{
   text-align: center;
 }
 
-/* Container cho các nút trạng thái */
-.status-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.status-buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #f0f0f0;
-  color: #333;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.status-buttons button:hover {
-  background-color: #ddd;
-}
-
-/* Nút trạng thái đang được chọn */
-.status-buttons button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Container cho các thẻ đơn hàng */
-.order-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-/* Thẻ đơn hàng cá nhân */
 .order-card {
-  background-color: #ffffff;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /* Hiển thị con trỏ chuột như hình bàn tay */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
 }
 
-/* Phần tiêu đề trong mỗi thẻ đơn hàng */
-.order-header {
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+.order-card:hover {
+  background-color: #f0f0f0; /* Thay đổi màu nền khi rê chuột */
 }
 
-/* ID đơn hàng và các thông tin khác */
-.order-header h4 {
-  font-size: 1.2rem;
-  margin: 0;
-  color: #007bff;
+.order-card p {
+  margin: 5px 0; /* Khoảng cách giữa các dòng */
 }
 
-.order-header p {
-  font-size: 1rem;
-  margin: 5px 0;
-  color: #555;
-}
-
-/* Tổng thanh toán cụ thể */
-.order-header p.total-amount {
-  font-weight: bold;
-  color: red;
-}
-
-/* Phần chi tiết đơn hàng */
-.order-details {
-  margin-top: 20px;
-}
-
-/* Tiêu đề cho các mặt hàng trong đơn hàng */
-.order-details h5 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-/* Container cho từng mặt hàng trong đơn hàng */
-.order-items {
-  list-style: none;
-  padding: 0;
-}
-
-.order-item {
-  display: flex;
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
-  align-items: center;
-}
-
-.order-item:last-child {
-  border-bottom: none;
-}
-
-/* Hình ảnh sản phẩm */
-.order-item-image {
-  width: 100px;
-  height: auto;
-  border-radius: 8px;
-  margin-right: 15px;
-}
-
-/* Container cho thông tin sản phẩm */
-.order-item-info {
-  flex: 1;
-}
-
-/* Tên sản phẩm và mô tả */
-.product-name {
-  font-weight: bold;
-  color: #333;
-}
-
-.product-description {
-  color: #777;
-  margin-bottom: 5px;
-}
-
-/* Giá và tổng giá */
-.product-price, .item-total {
-  font-size: 1rem;
-  color: #333;
-}
-
-.item-total {
-  font-weight: bold;
-  color: #646669;
-}
-
-/* Thêm khoảng cách dưới thẻ đơn hàng */
-.order-card {
-  margin-bottom: 20px;
+.order-status {
+  color: blue; /* Đặt màu xanh cho trạng thái */
+  font-weight: bold; /* Làm cho trạng thái nổi bật hơn */
 }

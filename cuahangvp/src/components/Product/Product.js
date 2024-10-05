@@ -16,7 +16,7 @@ const Product = () => {
   const [isWritingReview, setIsWritingReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleWriteReviewClick = () => {
     if (user) {
@@ -110,15 +110,6 @@ const Product = () => {
   const discountedPrice = parseFloat(product.discounted_price);
   const discountPercentage = parseFloat(product.discount);
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3
-    }).format(value);
-  };
-
   const handleAddToCart = async (productId, quantity = 1) => {
     try {
       const api = user ? authApi() : apiClient;
@@ -171,29 +162,29 @@ const Product = () => {
         <div className="product-page-details">
           <h1 className="product-page-name">{product.name}</h1>
           <p className="product-page-description">{product.description}</p>
-  
+
           <div className="product-page-prices">
             <p className="product-label">Giá sản phẩm:</p>
             <div className="price-wrapper">
               {product.discount > 0 ? (
                 <>
                   <p className='product-price original-price'>
-                    {formatCurrency(originalPrice)}
+                    {originalPrice} VND
                   </p>
                   <p className='product-price discounted-price'>
-                    {formatCurrency(discountedPrice)}
+                    {discountedPrice} VND
                   </p>
                 </>
               ) : (
                 <p className='product-price discounted-price'>
-                  {formatCurrency(originalPrice)}
+                  {originalPrice} VND
                 </p>
               )}
             </div>
           </div>
-  
+
           <p className="product-page-stock">Số lượng tồn kho: {product.stock_quantity}</p>
-  
+
           <div className="product-page-actions">
             <button className="page-btn-add-to-cart" onClick={() => handleAddToCart(product.id)}>Thêm vào giỏ hàng</button>
             <button className="page-btn-buy-now" onClick={() => handleBuyNow(product.id)}>Mua ngay</button>
@@ -205,7 +196,7 @@ const Product = () => {
           </div>
         )}
       </div>
-      
+
       {/* HIỂN THỊ ĐÁNH GIÁ SẢN PHẨM */}
       <div className="product-reviews-section">
         <h2>Những đánh giá của khách hàng về sản phẩm</h2>

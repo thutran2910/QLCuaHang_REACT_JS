@@ -90,6 +90,9 @@ const Chat = () => {
 
     return (
         <div className="chat-container">
+            {user.id !== 1 && ( // Display title only if user.id is not 1
+                <h2>Mọi thắc mắc xin liên hệ với quản lý của hàng</h2>
+            )}
             {user.id === 1 && (
                 <div className="user-selector">
                     <h5>Khách hàng của bạn</h5>
