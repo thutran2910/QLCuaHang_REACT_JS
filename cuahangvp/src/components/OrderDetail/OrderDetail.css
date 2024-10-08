@@ -67,15 +67,16 @@
     padding: 10px 20px;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff; /* Màu xanh cho nút */
+    background-color: #e450ac; /* Màu xanh cho nút */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-right: 20px;
   }
   
   .btn-momo:hover {
-    background-color: #0056b3; /* Tối màu khi hover */
+    background-color: #a50673; /* Tối màu khi hover */
   }
   
   .total-amount {

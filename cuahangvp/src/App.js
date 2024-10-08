@@ -61,7 +61,7 @@ const App = () => {
             <Route path="/product/:id" element={<Product /> } />  /* Thêm route cho trang chi tiết sản phẩm */
             <Route path="/order/" element={<Order />} />
             <Route path="/orderlist" element={<OrderList />} />
-            <Route path="/order/:id" element={<OrderDetail />} />
+            <Route path="/order/:orderId" element={<OrderDetail />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>
           <Footer />
