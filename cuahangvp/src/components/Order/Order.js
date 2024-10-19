@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiClient, { authApi, endpoints } from '../../configs/API';
 import { MyUserContext } from '../../configs/Contexts';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import CryptoJS from 'crypto-js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Order.css';
 
 const Order = () => {
@@ -15,7 +15,6 @@ const Order = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
-  const navigate = useNavigate();
   const [errors, setErrors] = useState({
     shippingAddress: false,
     paymentMethod: false,
@@ -71,7 +70,6 @@ const Order = () => {
       const discountedPrice = parseFloat(item.product.discounted_price);
       return sum + (item.quantity * discountedPrice);
     }, 0);
-
     setTotalAmount(total);
   }, [cartItems]);
 
@@ -162,15 +160,8 @@ const Order = () => {
       });
 
       if (response.status === 201) {
-        if (paymentMethod === 'online') {
-          // Handle online payment here (excluding MoMo)
-          alert('Đơn hàng đã được tạo thành công! Bạn sẽ được chuyển đến trang thanh toán.');
-          // Redirect to payment page or implement online payment logic here
-          // window.location.href = 'URL thanh toán trực tuyến';
-        } else {
-          alert('Đơn hàng đã được tạo thành công!');
-        }
-
+        toast.success('Đơn hàng đã được tạo thành công!');
+        // Reset các giá trị sau khi tạo đơn hàng
         setCartItems([]);
         setShippingAddress('');
         setPaymentMethod('cash');
@@ -196,129 +187,132 @@ const Order = () => {
   };
 
   return (
-    <main className='order-content'>
-      <div className='order-info'>
-        <h2>Thông tin thanh toán</h2>
-        {error && <p className='error-message'>{error}</p>}
-        {!user && (
-          <>
-            <label className={errors.name ? 'error' : ''}>
-              <span>Tên:</span>
-              <input
-                type="text"
-                value={name}
-                onChange={handleInputChange('name')}
-                required
-              />
-              {errors.name && <span className='error-text'>*Vui lòng nhập tên</span>}
-            </label>
-            <label className={errors.email ? 'error' : ''}>
-              <span>Email:</span>
-              <input
-                type="email"
-                value={email}
-                onChange={handleInputChange('email')}
-                required
-              />
-              {errors.email && <span className='error-text'>*Vui lòng nhập email</span>}
-            </label>
-          </>
-        )}
-        <label className={errors.shippingAddress ? 'error' : ''}>
-          <span>Địa chỉ giao hàng:</span>
-          <textarea
-            value={shippingAddress}
-            onChange={handleInputChange('shippingAddress')}
-            required
-          />
-          {errors.shippingAddress && <span className='error-text'>*Vui lòng nhập địa chỉ giao hàng</span>}
-        </label>
-        <label className={errors.paymentMethod ? 'error' : ''}>
-          <span>Phương thức thanh toán:</span>
-          <select
-            value={paymentMethod}
-            onChange={handleInputChange('paymentMethod')}
-            required
-          >
-            <option value="cash">Thanh toán khi nhận hàng</option>
-            <option value="bank_transfer">Chuyển khoản ngân hàng</option>
-            <option value="online">Thanh toán trực tuyến</option>
-          </select>
-          {errors.paymentMethod && <span className='error-text'>*Vui lòng chọn phương thức thanh toán</span>}
-        </label>
-        {paymentMethod === 'bank_transfer' && (
-          <div>
-            <p>Thông tin chuyển khoản:</p>
-            <ul>
-              <li>Số tài khoản: 4857299482001</li>
-              <li>Ngân hàng: Agribank, Chi nhánh Trung tâm Sài Gòn</li>
-              <li>Chủ tài khoản: Hồ Minh Anh</li>
-            </ul>
-            <label>
-              <span>Hình ảnh chuyển khoản:</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </label>
+    <>
+      <ToastContainer />
+      <main className='order-content'>
+        <div className='order-info'>
+          <h2>Thông tin thanh toán</h2>
+          {error && <p className='error-message'>{error}</p>}
+          {!user && (
+            <>
+              <label className={errors.name ? 'error' : ''}>
+                <span>Tên:</span>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={handleInputChange('name')}
+                  required
+                />
+                {errors.name && <span className='error-text'>*Vui lòng nhập tên</span>}
+              </label>
+              <label className={errors.email ? 'error' : ''}>
+                <span>Email:</span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={handleInputChange('email')}
+                  required
+                />
+                {errors.email && <span className='error-text'>*Vui lòng nhập email</span>}
+              </label>
+            </>
+          )}
+          <label className={errors.shippingAddress ? 'error' : ''}>
+            <span>Địa chỉ giao hàng:</span>
+            <textarea
+              value={shippingAddress}
+              onChange={handleInputChange('shippingAddress')}
+              required
+            />
+            {errors.shippingAddress && <span className='error-text'>*Vui lòng nhập địa chỉ giao hàng</span>}
+          </label>
+          <label className={errors.paymentMethod ? 'error' : ''}>
+            <span>Phương thức thanh toán:</span>
+            <select
+              value={paymentMethod}
+              onChange={handleInputChange('paymentMethod')}
+              required
+            >
+              <option value="cash">Thanh toán khi nhận hàng</option>
+              <option value="bank_transfer">Chuyển khoản ngân hàng</option>
+              <option value="online">Thanh toán trực tuyến</option>
+            </select>
+            {errors.paymentMethod && <span className='error-text'>*Vui lòng chọn phương thức thanh toán</span>}
+          </label>
+          {paymentMethod === 'bank_transfer' && (
+            <div>
+              <p>Thông tin chuyển khoản:</p>
+              <ul>
+                <li>Số tài khoản: 4857299482001</li>
+                <li>Ngân hàng: Agribank, Chi nhánh Trung tâm Sài Gòn</li>
+                <li>Chủ tài khoản: Hồ Minh Anh</li>
+              </ul>
+              <label>
+                <span>Hình ảnh chuyển khoản:</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </label>
+            </div>
+          )}
+          <label>
+            <span>Ghi chú:</span>
+            <textarea
+              placeholder="Nhập ghi chú nếu có..."
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+            />
+          </label>
+          <div className='order-total'>
+            <span>Tổng thanh toán: {totalAmount} VND</span>
           </div>
-        )}
-        <label>
-          <span>Ghi chú:</span>
-          <textarea
-            placeholder="Nhập ghi chú nếu có..."
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-          />
-        </label>
-        <div className='order-total'>
-          <span>Tổng thanh toán: {totalAmount} VND</span>
+          <button className='btn-checkout' onClick={handleCheckout}>
+            Xác nhận đặt hàng
+          </button>
         </div>
-        <button className='btn-checkout' onClick={handleCheckout}>
-          Xác nhận đặt hàng
-        </button>
-      </div>
 
-      <div className='order-details'>
-        <h2>Chi tiết đơn hàng</h2>
-        {cartItems.length > 0 ? (
-          <div className='order-list'>
-            {cartItems.map(item => {
-              const originalPrice = parseFloat(item.product.price);
-              const discount = parseFloat(item.product.discount);
-              const discountedPrice = parseFloat(item.product.discounted_price);
+        <div className='order-details'>
+          <h2>Chi tiết đơn hàng</h2>
+          {cartItems.length > 0 ? (
+            <div className='order-list'>
+              {cartItems.map(item => {
+                const originalPrice = parseFloat(item.product.price);
+                const discount = parseFloat(item.product.discount);
+                const discountedPrice = parseFloat(item.product.discounted_price);
 
-              return (
-                <div className='order-item' key={item.product.id}>
-                  <img src={item.product.image_url} alt={item.product.name} className='order-item-image' />
-                  <div className='order-item-details'>
-                    <h4 className='order-item-name'>{item.product.name}</h4>
-                    <div className='order-item-price'>
-                      {discount > 0 ? (
-                        <div className='price-container'>
-                          <p className='original-price'>{originalPrice} VND</p>
-                          <p className='discounted-price'>{discountedPrice} VND</p>
-                        </div>
-                      ) : (
-                        <p className='no-discount-price'>{originalPrice} VND</p>
-                      )}
+                return (
+                  <div className='order-item' key={item.product.id}>
+                    <img src={item.product.image_url} alt={item.product.name} className='order-item-image' />
+                    <div className='order-item-details'>
+                      <h4 className='order-item-name'>{item.product.name}</h4>
+                      <div className='order-item-price'>
+                        {discount > 0 ? (
+                          <div className='price-container'>
+                            <p className='original-price'>{originalPrice} VND</p>
+                            <p className='discounted-price'>{discountedPrice} VND</p>
+                          </div>
+                        ) : (
+                          <p className='no-discount-price'>{originalPrice} VND</p>
+                        )}
+                      </div>
+                      <p className='order-item-quantity'>Số lượng: {item.quantity}</p>
+                      <p className='price-tong'>
+                        Tổng giá: 
+                        <span className='original-price'>{item.priceTong} VND</span>
+                      </p>
                     </div>
-                    <p className='order-item-quantity'>Số lượng: {item.quantity}</p>
-                    <p className='price-tong'>
-                      Tổng giá: 
-                      <span className='original-price'>{item.priceTong} VND</span>
-                    </p>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p>Giỏ hàng của bạn đang trống.</p>
-        )}
-      </div>
-    </main>
+                );
+              })}
+            </div>
+          ) : (
+            <p>Giỏ hàng của bạn đang trống.</p>
+          )}
+        </div>
+      </main>
+    </>
   );  
 };
 

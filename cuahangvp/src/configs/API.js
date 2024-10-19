@@ -19,8 +19,8 @@ export const endpoints = {
   reviews: '/review/',
   createOrder: '/order/', 
   orderList: () => '/orderlist/',  // Endpoint mới để lấy danh sách hóa đơn của người dùng
-  // Thêm endpoint cho thanh toán MoMo
-  createMomoPayment: '/payment/', 
+  // Thêm endpoint cho thanh toán 
+  createPayment: () => '/api/payment/',
 };
 
 export const setAuthToken = (token) => {

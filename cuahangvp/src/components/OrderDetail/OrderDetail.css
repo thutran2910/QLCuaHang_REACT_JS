@@ -62,21 +62,21 @@
     font-weight: bold;
   }
   
-  .btn-momo {
+  .btn-vnpay {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
     color: #fff;
-    background-color: #e450ac; /* Màu xanh cho nút */
+    background-color: #0a6ee1; /* Màu xanh cho nút */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-right: 20px;
+    margin: 10px;
   }
   
-  .btn-momo:hover {
-    background-color: #a50673; /* Tối màu khi hover */
+  .btn-vnpay:hover {
+    background-color: #0016df; /* Tối màu khi hover */
   }
   
   .total-amount {
@@ -89,3 +89,17 @@
     font-weight: bold;
   }
   
+ .btn-momo {
+    background-color: rgba(211, 32, 227, 0.877); /* Nền hồng */
+    color: white; /* Chữ trắng */
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.btn-momo:hover {
+  background-color: rgba(251, 0, 255, 0.596); /* Nền hồng */
+}
