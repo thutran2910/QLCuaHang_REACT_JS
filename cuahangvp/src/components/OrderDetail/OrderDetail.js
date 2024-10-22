@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { authApi, getAuthToken } from '../../configs/API';
-import { endpoints } from '../../configs/API';
+import { useParams, useNavigate } from 'react-router-dom';
+import { authApi, endpoints } from '../../configs/API';
 import './OrderDetail.css';
 
 const OrderDetail = () => {
     const api = authApi();
+    const navigate = useNavigate();
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,43 +32,36 @@ const OrderDetail = () => {
         fetchOrderDetails();
     }, [orderId]);
 
-    const handleThanhToanVNPay = async () => {
-        if (!getAuthToken()) {
-            alert('Bạn cần đăng nhập trước khi thanh toán.');
-            return;
-        }
-    
-        const paymentData = {
-            order_type: 'bill',
-            order_id: orderId,
-            amount: order.total_amount,
-            order_desc: `Thanh toán cho đơn hàng ${orderId}`,
-            shipping_address: order.shipping_address,
-            name: order.customer_name,
-            email: order.customer_email,
-            bank_code: '', // Nếu cần, hãy chắc chắn rằng trường này có giá trị hợp lệ
-            language: 'vn',
-        };
-        
-        console.log('Payment Data:', paymentData); // Ghi log dữ liệu
-        
-        const response = await api.post(endpoints.createPayment(), paymentData);
-        
-    
-        try {
-            const response = await api.post(endpoints.createPayment(), paymentData);
-            window.location.href = response.data.paymentUrl; // Chuyển hướng tới VNPay
-        } catch (error) {
-            console.error('Lỗi khi thanh toán VNPay:', error.response ? error.response.data : error);
-            alert('Có lỗi xảy ra khi thanh toán. Vui lòng thử lại!');
-        }
-    };
-    
-    
+    // Kiểm tra tham số truy vấn để hiển thị thông báo thanh toán thành công
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const paymentSuccess = queryParams.get('payment_success');
 
-    // Tương tự cho MoMo (nếu cần)
-    const handleThanhToanMoMo = async () => {
-        // Đoạn mã tương tự như VNPay
+        if (paymentSuccess === 'true') {
+            alert('Thanh toán thành công!');
+        }
+    }, []);
+
+    const handleThanhToanVNPay = async () => {
+        if (order) {
+            try {
+                const response = await api.post(endpoints.payment, {
+                    order_id: order.id,
+                    amount: order.total_amount,
+                    order_desc: `Thanh toán cho đơn hàng ${order.id}`,
+                    order_type: 'online',
+                    bank_code: null,
+                    language: 'vn',
+                });
+
+                const paymentUrl = response.data.payment_url;
+                window.location.href = paymentUrl;
+            } catch (error) {
+                setError('Lỗi khi gửi yêu cầu thanh toán');
+            }
+        } else {
+            setError('Thông tin đơn hàng không có');
+        }
     };
 
     if (loading) return <p>Đang tải...</p>;
@@ -100,17 +93,12 @@ const OrderDetail = () => {
             </div>
 
             {order.payment_method === 'Thanh toán trực tuyến' && (
-                <>
-                    <button onClick={handleThanhToanVNPay} className='btn-vnpay'>
-                        Thanh toán qua VNPay
-                    </button>
-                    <button onClick={handleThanhToanMoMo} className='btn-momo'>
-                        Thanh toán qua MoMo
-                    </button>
-                </>
+                <button onClick={handleThanhToanVNPay} className='btn-vnpay'>
+                    Thanh toán qua VNPay
+                </button>
             )}
 
-            <button onClick={() => window.history.back()}>Quay lại</button>
+            <button onClick={() => navigate(-1)}>Quay lại</button>
         </div>
     );
 };

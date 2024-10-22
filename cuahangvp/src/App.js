@@ -12,6 +12,7 @@ import Order from './components/Order/Order';
 import Chat from './components/Chat/Chat';
 import OrderList from './components/OrderList/OrderList';
 import OrderDetail from './components/OrderDetail/OrderDetail';
+import PaymentForm from './components/PaymentForm/PaymentForm';
 import { MyUserContext, MyDispatchContext, MyUserReducer } from './configs/Contexts';
 import { getAuthToken, authApi, endpoints } from './configs/API';
 
@@ -63,6 +64,7 @@ const App = () => {
             <Route path="/orderlist" element={<OrderList />} />
             <Route path="/order/:orderId" element={<OrderDetail />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/payment/:id" element={<PaymentForm />} />
           </Routes>
           <Footer />
         </Router>

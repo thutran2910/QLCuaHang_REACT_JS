@@ -20,7 +20,8 @@ export const endpoints = {
   createOrder: '/order/', 
   orderList: () => '/orderlist/',  // Endpoint mới để lấy danh sách hóa đơn của người dùng
   // Thêm endpoint cho thanh toán 
-  createPayment: () => '/api/payment/',
+  payment: '/payment/', // Endpoint thanh toán
+  paymentSuccess: '/payment/return/', // Endpoint cho thông báo thanh toán thành công
 };
 
 export const setAuthToken = (token) => {
