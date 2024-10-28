@@ -45,15 +45,12 @@ const OrderDetail = () => {
     const handleThanhToanVNPay = async () => {
         if (order) {
             try {
+                // Gửi yêu cầu tạo URL thanh toán đến backend
                 const response = await api.post(endpoints.payment, {
-                    order_id: order.id,
-                    amount: order.total_amount,
-                    order_desc: `Thanh toán cho đơn hàng ${order.id}`,
-                    order_type: 'online',
-                    bank_code: null,
-                    language: 'vn',
+                    order_id: order.id,  // Chỉ gửi order_id và các thông tin cần thiết
                 });
 
+                // Backend trả về URL thanh toán, frontend chỉ cần chuyển hướng
                 const paymentUrl = response.data.payment_url;
                 window.location.href = paymentUrl;
             } catch (error) {

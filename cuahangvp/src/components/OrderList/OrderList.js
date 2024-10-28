@@ -38,7 +38,7 @@ const OrderList = () => {
             key={order.id} 
             onClick={() => handleOrderClick(order.id)}
           >
-            <h4>Mã đơn hàng: {order.id}</h4>
+            <h5>Mã đơn hàng: {order.id}</h5>
             <p>Tổng thanh toán: {order.total_amount} VND</p>
             <p className='order-status'>Trạng thái: {order.status}</p> {/* Thêm class cho trạng thái */}
           </div>
